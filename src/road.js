@@ -1,4 +1,4 @@
-// Class for the map; to show data, to give data to and to alter data
+// Class for the game map
 class Map {
     constructor(map) {
         this.map = map
@@ -27,7 +27,7 @@ class Map {
 
 }
 
-// class for making roads and modifying them according to their surroundings
+// class for making roads
 class Road {
     constructor(positionY, positionX, isRoadAccessable) {
         this.positionY = positionY
@@ -39,13 +39,13 @@ class Road {
     roadCheck(map) {
         this.isRoadAccessable = (
             // checks up
-            roadAccessableCheck(map.showMapIndex(this.positionY - 1, this.positionX), 0) ||
+            roadAccessableCheck(map.showMapIndex(this.positionY - 1, this.positionX)) ||
             // checks down
-            roadAccessableCheck(map.showMapIndex(this.positionY + 1, this.positionX), 6) ||
+            roadAccessableCheck(map.showMapIndex(this.positionY + 1, this.positionX)) ||
             // checks left
-            roadAccessableCheck(map.showMapIndex(this.positionY, this.positionX - 1), 0) ||
+            roadAccessableCheck(map.showMapIndex(this.positionY, this.positionX - 1)) ||
             //checks right
-            roadAccessableCheck(map.showMapIndex(this.positionY, this.positionX + 1), 6)
+            roadAccessableCheck(map.showMapIndex(this.positionY, this.positionX + 1))
         )
     }
 }
@@ -59,7 +59,6 @@ function roadAccessableCheck(object) {
     return false
 }
 
-
 let map = new Map([
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
@@ -70,8 +69,8 @@ let map = new Map([
     [0, 0, 0, 0, 0, 0, 0]
 ])
 
-let road1 = new Road(0, 3, true)
-let road2 = new Road(0, 4, false)
+let road1 = new Road(0, 3, false)
+let road2 = new Road(0, 4, true)
 let road3 = new Road(0, 2, false)
 let road4 = new Road(1, 3, false)
 
@@ -80,14 +79,17 @@ map.addindex(road2)
 map.addindex(road3)
 map.addindex(road4)
 
+console.log(map.showMapIndex(0, 3))
 console.log(map.showMapIndex(0, 4))
 console.log(map.showMapIndex(0, 2))
 console.log(map.showMapIndex(1, 3))
 
+road1.roadCheck(map)
 road2.roadCheck(map)
 road3.roadCheck(map)
 road4.roadCheck(map)
 
+console.log(map.showMapIndex(0, 3))
 console.log(map.showMapIndex(0, 4))
 console.log(map.showMapIndex(0, 2))
 console.log(map.showMapIndex(1, 3))
