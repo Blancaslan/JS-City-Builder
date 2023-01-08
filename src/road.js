@@ -27,12 +27,29 @@ class Map {
 
 }
 
-// class for making roads
-class Road {
+class Plot {
     constructor(positionY, positionX, isRoadAccessable) {
-        this.positionY = positionY
+        this.positionY =  positionY
         this.positionX = positionX
         this.isRoadAccessable = isRoadAccessable
+    }
+}
+
+class Building extends Plot{
+    constructor(positionY, positionX, isRoadAccessable) {
+        super(positionY, positionX, isRoadAccessable)
+    }
+
+    showData() {
+        return [this.positionY, this.positionX, this.isRoadAccessable]
+    }
+}
+
+
+// class for making roads
+class Road extends Plot{
+    constructor(positionY, positionX, isRoadAccessable) {
+        super(positionY, positionX, isRoadAccessable)
     }
 
     // checks if a road nearby is accessable then makes this road accessable
