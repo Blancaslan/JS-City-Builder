@@ -1,5 +1,5 @@
-// Class for the game map
 module.exports = {Map: class Map {
+    // class to make the game map
     constructor(map) {
         this.map = map
     }
