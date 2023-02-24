@@ -6,13 +6,15 @@ module.exports = {Plot: class Plot {
         this.isRoadAccessable = isRoadAccessable
     }
 
-    addLocationData(locationY, locationX) {
-        if (locationY == 0 || locationY == 6 && locationX >= 0 && locationX <= 6) {
+    addLocationData(locationY, locationX, mapLengthY, mapLengthX) {
+        mapLengthX -= 1
+        mapLengthY -= 1
+        if (locationY == 0 || locationY == mapLengthY && locationX >= 0 && locationX <= mapLengthX) {
             this.positionY = locationY
             this.positionX = locationX
             return true
         }
-        if (locationY >= 0 && locationY <= 6 && locationX == 0 || locationX == 6) {
+        if (locationY >= 0 && locationY <= mapLengthY && locationX == 0 || locationX == mapLengthX) {
             this.positionY = locationY
             this.positionX = locationX
             return true
