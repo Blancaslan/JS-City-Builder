@@ -49,7 +49,7 @@ map.addindex(road4)
 map.addindex(road5)
 map.addindex(road6)
 
-map.highwayCheck([0, 3])
+map.highwayCheck(3, 3)
 
 console.log(map.showMapIndex(0, 3))
 console.log(map.showMapIndex(0, 4))

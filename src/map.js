@@ -74,8 +74,19 @@ module.exports = {Map: class Map {
         return cashMoney
     }
 
-    highwayCheck(highwayLocation) {
-        console.log(this.map[highwayLocation[0]][highwayLocation[1]])
+    highwayCheck(y, x) {
+        // check if object is type Road and isRoadAccessable = false
+
+        // left
+        if (this.map[y][x].constructor.name === "Road" && !(this.map[y][x].isRoadAccessable)) {
+            console.log("yes")
+            console.log(this.map[y][x])
+            return
+        }
+        console.log("no")
+        return
+            // if object is a road set the road to isRoadAccessable = true and do this function on that road
+        
     }
 
 }}
