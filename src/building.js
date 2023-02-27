@@ -17,20 +17,12 @@ class Residence extends Building {
     constructor(positionY, positionX, isRoadAccessable, buildingTier) {
         super(positionY, positionX, isRoadAccessable, buildingTier)
     }
-
-    getTax(residenceTaxChart) {
-        return residenceTaxChart[this.buildingTier]
-    }
 }
 
-class Commerical extends Building {
+class Commercial extends Building {
 
     constructor(positionY, positionX, isRoadAccessable, buildingTier) {
         super(positionY, positionX, isRoadAccessable, buildingTier)
-    }
-
-    getTax(commericalTaxChart) {
-        return commericalTaxChart[this.buildingTier]
     }
 }
 
@@ -39,14 +31,10 @@ class Industrial extends Building {
     constructor(positionY, positionX, isRoadAccessable, buildingTier) {
         super(positionY, positionX, isRoadAccessable, buildingTier)
     }
-
-    getTax(industrialTaxChart) {
-        return industrialTaxChart[this.buildingTier]
-    }
 }
 
 module.exports = {
     Residence: Residence,
-    Commercial: Commerical,
+    Commercial: Commercial,
     Industrial: Industrial
 }

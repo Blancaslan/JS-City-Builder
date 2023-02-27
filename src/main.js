@@ -6,15 +6,6 @@ var Building = require("./building")
 
 let balance = 0
 
-let residences = {1: 100, 2: 200, 3: 300}
-let commercials = {1: 200, 2: 400, 3: 600}
-let industrials = {1: 300, 2: 600, 3: 900}
-
-let house1 = new Building.Residence(0, 0, false, 1)
-let office1 = new Building.Commercial(0, 0, false, 1)
-
-console.log(house1.getTax(residences))
-console.log(office1.getTax())
 
 let map = new Map.Map([
     [0, 0, 0, 0, 0, 0, 0],
@@ -26,18 +17,21 @@ let map = new Map.Map([
     [0, 0, 0, 0, 0, 0, 0]
 ])
 
-let highway = new Plot.Plot(0, 3, true)
 
 // let posX = prompt("Input X: ")
 // let posY = prompt("Input Y: ")
 // console.log(highway.addLocationData(posY, posX, map.getMapHeight(), map.getMapWidth()))
 // while (!(highway.addLocationData(posY, posX, map.getMapHeight(), map.getMapWidth()))) {
-//     posX = prompt("Input X: ")
-//     posY = prompt("Input Y: ")
-// }
+    //     posX = prompt("Input X: ")
+    //     posY = prompt("Input Y: ")
+    // }
+    
+    // while addLocation(posY, posX) returns false
+    
+let house1 = new Building.Residence(4, 3, false, 3)
+let office1 = new Building.Commercial(6, 2, false, 1)
 
-// while addLocation(posY, posX) returns false
-
+let highway = new Plot.Plot(0, 3, true)
 let road1 = new Road.Road(0, 3, false)
 let road2 = new Road.Road(0, 4, false)
 let road3 = new Road.Road(0, 2, false)
@@ -45,12 +39,17 @@ let road4 = new Road.Road(1, 3, false)
 let road5 = new Road.Road(2, 3, false)
 let road6 = new Road.Road(3, 3, true)
 
-map.addindex(road1)
+
+map.addindex(highway)
+map.addindex(house1)
+map.addindex(office1)
 map.addindex(road2)
 map.addindex(road3)
 map.addindex(road4)
 map.addindex(road5)
 map.addindex(road6)
+
+map.highwayCheck([0, 3])
 
 console.log(map.showMapIndex(0, 3))
 console.log(map.showMapIndex(0, 4))

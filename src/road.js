@@ -21,6 +21,8 @@ module.exports = {Road: class Road extends Plot.Plot {
     }
 }}
 
+// make high-way check for a road on each side and when a road is found change that road to roadAccessable, then make that road do roadcheck
+
 function roadAccessableCheck(object) {
     if (object.constructor.name) {
         if (object.isRoadAccessable) {
