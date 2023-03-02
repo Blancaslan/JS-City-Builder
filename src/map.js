@@ -75,12 +75,17 @@ module.exports = {Map: class Map {
     }
 
     highwayCheck(y, x) {
+        // input is highway x and y coords
         // check if object is type Road and isRoadAccessable = false
+        console.log(this.map[y][x])
+        console.log(this.map[y][x - 1])
+        console.log(this.map[y][x + 1])
 
         // left
         if (this.map[y][x].constructor.name === "Road" && !(this.map[y][x].isRoadAccessable)) {
-            console.log("yes")
-            console.log(this.map[y][x])
+            this.map[y][x - 1].isRoadAccessable = true
+            console.log(this.map[y][x - 1])
+            this.highwayCheck()
             return
         }
         console.log("no")
