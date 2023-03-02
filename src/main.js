@@ -17,13 +17,13 @@ let map = new Map.Map([
 let house1 = new Building.Residence(4, 3, false, 3)
 let office1 = new Building.Commercial(6, 2, false, 1)
 
-let highway = new Plot.Plot(0, 0, true)
-let road1 = new Road.Road(0, 1, false)
-let road2 = new Road.Road(0, 6, false)
+let highway = new Plot.Plot(0, 1, true)
+let road1 = new Road.Road(0, 2, false)
+let road2 = new Road.Road(0, 0, false)
 
 
 map.addindex(highway)
 map.addindex(road1)
 map.addindex(road2)
 
-map.highwayCheck(0, 0)
+map.highwayCheck(0, 1)
