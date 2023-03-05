@@ -77,19 +77,15 @@ module.exports = {Map: class Map {
     highwayCheck(y, x) {
         // input is highway x and y coords
         // check if object is type Road and isRoadAccessable = false
-        console.log(this.map[y])
         // left
         this.perimeterCheck(y, x - 1)
-        console.log(this.map[y])
         // right
         this.perimeterCheck(y, x + 1)
-        console.log(this.map[y])
         // up
         this.perimeterCheck(y - 1, x)
         // down
         this.perimeterCheck(y + 1, x)
 
-        console.log("no")
         return
             // if object is a road set the road to isRoadAccessable = true and do this function on that road
         
@@ -97,12 +93,14 @@ module.exports = {Map: class Map {
 
     perimeterCheck(y, x) {
         // function to check nearby objects for accessable roads
-        if (this.map[y][x].constructor.name === "Road" && !(this.map[y][x].isRoadAccessable)) {
+        try {
+            if (this.map[y][x].constructor.name === "Road" && !(this.map[y][x].isRoadAccessable)) {
             this.map[y][x].isRoadAccessable = true
-            console.log("yes")
             this.highwayCheck(y, x)
             return
+            }
         }
+        catch {return}
     }
 
 }}
