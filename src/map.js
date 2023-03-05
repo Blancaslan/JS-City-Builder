@@ -76,7 +76,6 @@ module.exports = {Map: class Map {
 
     highwayCheck(y, x) {
         // input is highway x and y coords
-        // check if object is type Road and isRoadAccessable = false
         // left
         this.perimeterCheck(y, x - 1)
         // right
@@ -87,8 +86,6 @@ module.exports = {Map: class Map {
         this.perimeterCheck(y + 1, x)
 
         return
-            // if object is a road set the road to isRoadAccessable = true and do this function on that road
-        
     }
 
     perimeterCheck(y, x) {
@@ -102,5 +99,4 @@ module.exports = {Map: class Map {
         }
         catch {return}
     }
-
 }}
