@@ -1,9 +1,17 @@
-module.exports = {Plot: class Plot {
+class Plot {
     // class of a position in game with attribute of roadAccessable
     constructor(positionY, positionX, isRoadAccessable) {
         this.positionY =  positionY
         this.positionX = positionX
         this.isRoadAccessable = isRoadAccessable
+    }
+
+    getPositionY() {
+        return this.positionY
+    }
+
+    getPositionX() {
+        return this.positionX
     }
 
     addLocationData(locationY, locationX, mapLengthY, mapLengthX) {
@@ -21,4 +29,6 @@ module.exports = {Plot: class Plot {
         }
         return false
     }
-}}
+}
+
+module.exports = {Plot}

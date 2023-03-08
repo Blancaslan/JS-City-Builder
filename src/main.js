@@ -36,5 +36,5 @@ map.addindex(road6)
 
 map.showMap()
 console.log("\n\n\n\n")
-map.highwayCheck(0, 1)
+map.highwayCheck(highway.getPositionY(), highway.getPositionX())
 map.showMap()

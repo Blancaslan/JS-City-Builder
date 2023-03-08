@@ -34,7 +34,7 @@ class Industrial extends Building {
 }
 
 module.exports = {
-    Residence: Residence,
-    Commercial: Commercial,
-    Industrial: Industrial
+    Residence,
+    Commercial,
+    Industrial
 }

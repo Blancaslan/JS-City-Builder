@@ -1,6 +1,6 @@
 const prompt = require('prompt-sync')();
 
-module.exports = {Map: class Map {
+class Map {
     // class to make the game map
     constructor(map) {
         this.map = map
@@ -99,4 +99,6 @@ module.exports = {Map: class Map {
         }
         catch {return}
     }
-}}
+}
+
+module.exports = {Map}
