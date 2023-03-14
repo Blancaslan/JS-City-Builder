@@ -55,21 +55,36 @@ class Map {
 
     getAllTaxes() {
         let cashMoney = 0
-        let residences = {1: 100, 2: 200, 3: 300}
-        let commercials = {1: 200, 2: 400, 3: 600}
-        let industrials = {1: 300, 2: 600, 3: 900}
 
         for (let y = 0; y < this.map.length; y++)
             for (let x = 0; x < this.map[y].length; x++)
             switch (this.map[y][x].constructor.name) {
                 case "Residence":
-                    cashMoney += residences[this.map[y][x].buildingTier]
+                    cashMoney += {1: 100, 2: 200, 3: 300}[this.map[y][x].buildingTier]
                     break
                 case "Commercial":
-                    cashMoney += commercials[this.map[y][x].buildingTier]
+                    cashMoney += {1: 200, 2: 400, 3: 600}[this.map[y][x].buildingTier]
                     break
                 case "Industrial":
-                    cashMoney += industrials[this.map[y][x].buildingTier]
+                    cashMoney += {1: 300, 2: 600, 3: 900}[this.map[y][x].buildingTier]
+            }
+        return cashMoney
+    }
+
+    useAllTaxes() {
+        let cashMoney = 0
+
+        for (let y = 0; y < this.map.length; y++)
+            for (let x = 0; x < this.map[y].length; x++)
+            switch (this.map[y][x].constructor.name) {
+                case "Residence":
+                    cashMoney += {1: 100, 2: 200, 3: 300}[this.map[y][x].buildingTier]
+                    break
+                case "Commercial":
+                    cashMoney += {1: 200, 2: 400, 3: 600}[this.map[y][x].buildingTier]
+                    break
+                case "Industrial":
+                    cashMoney += {1: 300, 2: 600, 3: 900}[this.map[y][x].buildingTier]
             }
         return cashMoney
     }

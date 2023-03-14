@@ -1,5 +1,4 @@
 var Plot = require('./plot')
-var RoadAccess = require('./road')
 class Building extends Plot.Plot{
     // parent class for all buildings in game
     constructor(positionY, positionX, isRoadAccessable, buildingTier) {
