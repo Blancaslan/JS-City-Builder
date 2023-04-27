@@ -1,38 +1,72 @@
-var Plot = require( './plot' )
-class Building extends Plot.Plot{
-    // parent class for all buildings in game
-    constructor( positionY, positionX, isRoadAccessable, buildingTier ) {
+var MapPlot = require( './plot' )
+class Building extends MapPlot.MapPlot
+{
+    constructor( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity ) 
+
+    {
         super( positionY, positionX, isRoadAccessable )
 
         this.buildingTier = buildingTier
+        this.buildingSuppliedWithWater = buildingSuppliedWithWater
+        this.buildingSuppliedWithElectricity = buildingSuppliedWithElectricity
     }
 
-    showData() {
+    showData() 
+    {
         return [this.positionY, this.positionX, this.isRoadAccessable]
     }
-}
 
-// Residence class for residencial buildings that inherits Building
-class Residence extends Building {
+    setBuildingSuppliedWithWater()
+    {
+        this.buildingSuppliedWithWater = true
+    }
 
-    constructor( positionY, positionX, isRoadAccessable, buildingTier ) {
-        super( positionY, positionX, isRoadAccessable, buildingTier )
+    setBuildingSuppliedWithElectricity()
+    {
+        this.buildingSuppliedWithElectricity = true
     }
 }
 
-// Comerical class for commercial buildings that inherits Building
-class Commercial extends Building {
+class Residence extends Building 
+{
 
-    constructor( positionY, positionX, isRoadAccessable, buildingTier ) {
-        super( positionY, positionX, isRoadAccessable, buildingTier )
+    constructor( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity ) 
+
+    {
+        super( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity )
     }
 }
 
-// Industrial class for Industrial buildings that inherits Building
-class Industrial extends Building {
+class Commercial extends Building 
+{
 
-    constructor( positionY, positionX, isRoadAccessable, buildingTier ) {
-        super( positionY, positionX, isRoadAccessable, buildingTier )
+    constructor( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity ) 
+
+    {
+        super( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity )
+    }
+}
+
+class Industrial extends Building 
+{
+
+    constructor( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity )
+
+    {
+        super( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity )
+    }
+}
+
+class Government extends Building 
+{
+
+    constructor( positionY, positionX, isRoadAccessable, taxCost, radius )
+
+    {
+        super( positionY, positionX, isRoadAccessable )
+
+        this.taxCost = taxCost
+        this.radius = radius
     }
 }
 

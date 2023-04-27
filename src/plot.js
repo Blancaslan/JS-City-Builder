@@ -1,5 +1,4 @@
-class Plot {
-    // class of a position in game with attribute of roadAccessable
+class MapPlot {
     constructor( positionY, positionX, isRoadAccessable ) {
 
         this.positionY =  positionY
@@ -32,4 +31,4 @@ class Plot {
     }
 }
 
-module.exports = {Plot}
+module.exports = {MapPlot: MapPlot}

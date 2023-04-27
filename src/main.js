@@ -1,7 +1,7 @@
 const prompt = require( 'prompt-sync' )();
 var Map = require( './map' )
 var Road = require( './road' )
-var Plot = require( './plot' )
+var MapPlot = require( './plot' )
 var Building = require( './building' )
 
 let map = new Map.Map([
@@ -14,10 +14,10 @@ let map = new Map.Map([
     [0, 0, 0, 0, 0, 0, 0]
 ])
     
-let house1 = new Building.Residence(  4, 3, false, 3  )
-let office1 = new Building.Commercial(  6, 2, false, 1  )
+let house1 = new Building.Residence(  0, 4, false, 3, true, true  )
+let office1 = new Building.Commercial(  0, 3, false, 1, true, true )
 
-let highway = new Plot.Plot(  0, 1, true  )
+let highway = new MapPlot.MapPlot(  0, 1, true  )
 let road1 = new Road.Road(  0, 2, false  )
 let road2 = new Road.Road(  0, 0, false  )
 let road3 = new Road.Road(  1, 1, false  )
@@ -35,9 +35,6 @@ map.addindex(  road5  )
 map.addindex(  road6  )
 map.addindex(  office1  )
 map.addindex(  house1  )
-console.log(  map.getAllTaxes()  )
-
-map.showMap()
-console.log(  "\n\n\n\n"  )
 map.highwayCheck(  highway.getPositionY(), highway.getPositionX()  )
-map.showMap()
+console.log( map.showMap() )
+console.log( map.getAllTaxes() )
