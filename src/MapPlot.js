@@ -1,9 +1,8 @@
 class MapPlot {
-    constructor( positionY, positionX, isRoadAccessable ) {
+    constructor( positionY, positionX ) {
 
         this.positionY =  positionY
         this.positionX = positionX
-        this.isRoadAccessable = isRoadAccessable
     }
 
     getPositionY() {

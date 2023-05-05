@@ -1,4 +1,5 @@
 const prompt = require( 'prompt-sync' )();
+var Building = require ( './building' )
 
 class Map {
     constructor( map ) {
@@ -9,13 +10,21 @@ class Map {
         console.log(  this.map  )
     }
 
-    showIndexOnMap( y, x ) {
+    showLocationOnMap( y, x ) {
         try {
             return this.map[y][x]
         }
         catch {
             return "Error position doesn't exist, try somewhere else idiot!"
         }
+    }
+    
+    getMapHeight() {
+        return this.map.length
+    }
+
+    getMapWidth() {
+        return this.map[0].length
     }
 
     deleteIndex(  positionX, positionY  ) {
@@ -30,6 +39,7 @@ class Map {
                 return
             }
             let response = prompt(  "Something already exists here do you want to replace it? y/n"  )
+
             if ( response.toLowerCase() === "y" ) {
                 this.map[object.positionY][object.positionX] = object
                 return
@@ -45,69 +55,47 @@ class Map {
         
     }
 
-    getMapHeight() {
-        return this.map.length
-    }
-
-    getMapWidth() {
-        return this.map[0].length
-    }
-
-    // gathers taxes from all non-government buildings
-    getAllTaxes() {
-        let cashMoney = 0
-        let mapCoordY = 0;
-        let mapCoordX = 0;
-        let currentBuildingGivingTax = undefined;
-
-        for ( mapCoordY = 0; mapCoordY < this.map.length; mapCoordY++ ) 
-        {
-            for ( mapCoordX = 0; mapCoordX < this.map[mapCoordY].length; mapCoordX++ ) 
-            {
-                currentBuildingGivingTax = this.map[mapCoordY][mapCoordX]
-        
-                if ( currentBuildingGivingTax.buildingSuppliedWithWater === true && currentBuildingGivingTax.buildingSuppliedWithElectricity === true )
-                {
-                    switch ( currentBuildingGivingTax.constructor.name ) 
-                    {
-                        case "Residence":
-                            cashMoney += {1: 100, 2: 200, 3: 300}[currentBuildingGivingTax.buildingTier]
-                            break
-                        case "Commercial":
-                            cashMoney += {1: 200, 2: 400, 3: 600}[currentBuildingGivingTax.buildingTier]
-                            break
-                        case "Industrial":
-                            cashMoney += {1: 300, 2: 600, 3: 900}[currentBuildingGivingTax.buildingTier]
-                    }
+    // checks if there is a building at the same location where a pipe/wire is on a different Map
+    setBuildingWaterAndElectricity( aboveMap, positionY, positionX ) {
+        let buildingTypes = ["Residence", "Commercial", "Industrial"]
+        let currentLocation = aboveMap.showLocationOnMap(positionY, positionX )
+        for (let index = 0; index < buildingTypes.length; index++) {
+            if (currentLocation.constructor.name === buildingTypes[index]) {
+                if (this.map[positionY][positionX].constructor.name === "WaterPipe") {
+                    this.setNearbyBuildingsRequirements( aboveMap, currentLocation, Building.setBuildingSuppliedWithWater )
                 }
+                else if ( this.map[positionY][positionX].constructor.name === "ElectricityWire" ) {
+                    this.setNearbyBuildingsRequirements( aboveMap, currentLocation, Building.setBuildingSuppliedWithElectricity )
+                }
+                return
             }
         }
-
-        return cashMoney
     }
 
-    // function to spend taxes on government buildings
-    useAllTaxes() {
-        let cashMoney = 0
-
-        for ( let y = 0; y < this.map.length; y++ )
-
-            for ( let x = 0; x < this.map[y].length; x++ )
-
-            switch ( this.map[y][x].constructor.name ) 
-            {
-                case "Residence":
-                    cashMoney += {1: 100, 2: 200, 3: 300}[this.map[y][x].buildingTier]
-                    break
-                case "Commercial":
-                    cashMoney += {1: 200, 2: 400, 3: 600}[this.map[y][x].buildingTier]
-                    break
-                case "Industrial":
-                    cashMoney += {1: 300, 2: 600, 3: 900}[this.map[y][x].buildingTier]
-            }
-
-        return cashMoney
+    // initializes setBuildingWaterAndElectricity in one spot and all spots around it
+    setNearbyBuildingsRequirements( aboveMap, buildingAbovePipe, setValue ) {
+        let plotLocations = this.getNearbyPlotsOnMap( aboveMap, buildingAbovePipe )
+        // Center
+        if ( Building.checkForBuilding( plotLocations["center"] ) ) {setValue(plotLocations["center"])}
+        // Left
+        if ( Building.checkForBuilding( plotLocations["left"] ) ) {setValue(plotLocations["left"])}
+        // Right
+        if ( Building.checkForBuilding( plotLocations["right"] ) ) {setValue(plotLocations["right"])}
+        // Up
+        if ( Building.checkForBuilding( plotLocations["above"] ) ) {setValue(plotLocations["above"])}
+        // Down
+        if ( Building.checkForBuilding( plotLocations["below"] ) ) {setValue(plotLocations["below"])}
     }
+
+    getNearbyPlotsOnMap( aboveMap, buildingAbovePipe ) {
+        let centerPlot = this.locationExistenceCheck(aboveMap.showLocationOnMap(buildingAbovePipe.positionY, buildingAbovePipe.positionX)) ? aboveMap.showLocationOnMap(buildingAbovePipe.positionY, buildingAbovePipe.positionX) : 0
+        let leftPlot = this.locationExistenceCheck(aboveMap.showLocationOnMap(buildingAbovePipe.positionY, buildingAbovePipe.positionX - 1)) ? aboveMap.showLocationOnMap(buildingAbovePipe.positionY, buildingAbovePipe.positionX - 1) : 0
+        let rightPlot = this.locationExistenceCheck(aboveMap.showLocationOnMap(buildingAbovePipe.positionY, buildingAbovePipe.positionX + 1)) ? aboveMap.showLocationOnMap(buildingAbovePipe.positionY, buildingAbovePipe.positionX + 1) : 0
+        let abovePlot = this.locationExistenceCheck(aboveMap.showLocationOnMap(buildingAbovePipe.positionY - 1, buildingAbovePipe.positionX)) ? aboveMap.showLocationOnMap(buildingAbovePipe.positionY - 1, buildingAbovePipe.positionX) : 0
+        let belowPlot = this.locationExistenceCheck(aboveMap.showLocationOnMap(buildingAbovePipe.positionY + 1, buildingAbovePipe.positionX)) ? aboveMap.showLocationOnMap(buildingAbovePipe.positionY + 1, buildingAbovePipe.positionX) : 0
+        return {"center": centerPlot, "left": leftPlot, "right": rightPlot, "above": abovePlot, "below": belowPlot}
+    }
+
     // checks for highway object
     highwayCheck( y, x ) {
         // left
@@ -132,6 +120,14 @@ class Map {
             }
         }
         catch {return}
+    }
+
+    // checks to see if a location in an arrays index exists
+    locationExistenceCheck(location) {
+        if( !( location === undefined ) ) {
+            return true
+        }
+        return false
     }
 }
 
