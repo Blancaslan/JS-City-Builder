@@ -70,31 +70,11 @@ class Map {
 
     // gatheres a plot and all plots around it from x y coords
     getNearbyPlotsOnMap( pipe, setValue ) {
-        // let centerPlot = this.locationExistenceCheck(this.getLocation(pipe.positionY, pipe.positionX)) ? this.getLocation(pipe.positionY, pipe.positionX) : 0
-        // let leftPlot = this.locationExistenceCheck(this.getLocation(pipe.positionY, pipe.positionX - 1)) ? this.getLocation(pipe.positionY, pipe.positionX - 1) : 0
-        // let rightPlot = this.locationExistenceCheck(this.getLocation(pipe.positionY, pipe.positionX + 1)) ? this.getLocation(pipe.positionY, pipe.positionX + 1) : 0
-        // let abovePlot = this.locationExistenceCheck(this.getLocation(pipe.positionY - 1, pipe.positionX)) ? this.getLocation(pipe.positionY - 1, pipe.positionX) : 0
-        // let belowPlot = this.locationExistenceCheck(this.getLocation(pipe.positionY + 1, pipe.positionX)) ? this.getLocation(pipe.positionY + 1, pipe.positionX) : 0
         if ( this.locationExists( this.getLocation( pipe.positionY, pipe.positionX ) ) )     {setValue( this.getLocation( pipe.positionY, pipe.positionX ).getStructure() )}
         if ( this.locationExists( this.getLocation( pipe.positionY, pipe.positionX - 1 ) ) ) {setValue( this.getLocation( pipe.positionY, pipe.positionX - 1 ).getStructure() )}
         if ( this.locationExists( this.getLocation( pipe.positionY, pipe.positionX + 1 ) ) ) {setValue( this.getLocation( pipe.positionY, pipe.positionX + 1).getStructure() )}
         if ( this.locationExists( this.getLocation( pipe.positionY - 1, pipe.positionX ) ) ) {setValue( this.getLocation( pipe.positionY - 1, pipe.positionX ).getStructure() )}
         if ( this.locationExists( this.getLocation( pipe.positionY + 1, pipe.positionX ) ) ) {setValue( this.getLocation( pipe.positionY + 1, pipe.positionX ).getStructure() )}
-
-        //return {"center": centerPlot, "left": leftPlot, "right": rightPlot, "above": abovePlot, "below": belowPlot}
-    }
-    
-    // initializes setBuildingWaterAndElectricity in one spot and all spots around it
-    setNearbyBuildingsRequirements( pipe, setValue ) {
-        let plotLocations = this.getNearbyPlotsOnMap( pipe )
-
-        // if the checkForBuilding is given an area that doesnt exist it crashes.
-        
-        if ( Building.checkForBuilding( plotLocations["center"] ) ) {setValue( plotLocations["center"]["structure"] )}
-        if ( Building.checkForBuilding( plotLocations["left"] ) ) {setValue( plotLocations["left"]["structure"] )}
-        if ( Building.checkForBuilding( plotLocations["right"] ) ) {setValue( plotLocations["right"]["structure"] )}
-        if ( Building.checkForBuilding( plotLocations["above"] ) ) {setValue( plotLocations["above"]["structure"] )}
-        if ( Building.checkForBuilding( plotLocations["below"] ) ) {setValue( plotLocations["below"]["structure"] )}
     }
     
     // checks if there is a pipe on a building

@@ -1,15 +1,15 @@
 // gathers tax from one non-government building
-function getTax( currentBuildingGivingTax ) {
-    if ( currentBuildingGivingTax.buildingSuppliedWithWater === true && currentBuildingGivingTax.buildingSuppliedWithElectricity === true )
+function getTax( building ) {
+    if ( building.buildingSuppliedWithWater === true && building.buildingSuppliedWithElectricity === true )
     {
-        switch ( currentBuildingGivingTax.constructor.name ) 
+        switch ( building.constructor.name ) 
         {
             case "Residence":
-                return {1: 100, 2: 200, 3: 300}[currentBuildingGivingTax.buildingTier]
+                return {1: 100, 2: 200, 3: 300}[building.buildingTier]
             case "Commercial":
-                return {1: 200, 2: 400, 3: 600}[currentBuildingGivingTax.buildingTier]
+                return {1: 200, 2: 400, 3: 600}[building.buildingTier]
             case "Industrial":
-                return {1: 300, 2: 600, 3: 900}[currentBuildingGivingTax.buildingTier]
+                return {1: 300, 2: 600, 3: 900}[building.buildingTier]
         }
     }
     return 0
@@ -23,7 +23,7 @@ function getAllTaxes( Map ) {
     {
         for ( let mapCoordX = 0; mapCoordX < Map.map[mapCoordY].length; mapCoordX++ ) 
         {
-            cashMoney += getTax( Map.map[mapCoordY][mapCoordX]["Building"] ) 
+            cashMoney += getTax( Map.map[mapCoordY][mapCoordX]["structure"] ) 
         }
     }
     

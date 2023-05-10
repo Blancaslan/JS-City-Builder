@@ -37,11 +37,12 @@ map.addindex(  house6  )
 
 map.setBuildingWaterAndElectricity( 0, 3 )
 map.setBuildingWaterAndElectricity( 0, 4 )
-//console.log( Building.getAllTaxes( map ) )
-//console.log( map.getMap() )
+
 console.log( map.getLocation( 0, 3 ) )
 console.log( map.getLocation( 0, 4 ) )
 console.log( map.getLocation( 0, 5 ) )
 console.log( map.getLocation( 1, 3 ) )
 console.log( map.getLocation( 1, 4 ) )
 console.log( map.getLocation( 1, 5 ) )
+
+console.log( BuildingLib.getAllTaxes( map ) )
