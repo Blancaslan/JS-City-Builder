@@ -1,33 +1,29 @@
-class MapPlot {
-    constructor( positionY, positionX ) {
+const MapLocation = require("./mapLocation");
 
-        this.positionY =  positionY
-        this.positionX = positionX
+class MapPlot extends MapLocation.MapLocation {
+    constructor( positionY, positionX, structure, WaterPipe, ElectricityWire ) {
+        super( positionY, positionX )
+        this.structure = structure
+        this.WaterPipe = WaterPipe
+        this.ElectricityWire = ElectricityWire
     }
 
-    getPositionY() {
-        return this.positionY
+    getLocation() {
+        return [this.positionY, this.positionX]
     }
 
-    getPositionX() {
-        return this.positionX
+    getStructure() {
+        return this.structure
     }
 
-    addLocationData( locationY, locationX, mapLengthY, mapLengthX ) {
-        mapLengthX -= 1
-        mapLengthY -= 1
-        if ( locationY == 0 || locationY == mapLengthY && locationX >= 0 && locationX <= mapLengthX ) {
-            this.positionY = locationY
-            this.positionX = locationX
-            return true
-        }
-        if ( locationY >= 0 && locationY <= mapLengthY && locationX == 0 || locationX == mapLengthX ) {
-            this.positionY = locationY
-            this.positionX = locationX
-            return true
-        }
-        return false
+    getWaterPipe() {
+        return this.WaterPipe
     }
+
+    getElectricityWire() {
+        return this.ElectricityWire
+    }
+
 }
 
 module.exports = {MapPlot: MapPlot}
