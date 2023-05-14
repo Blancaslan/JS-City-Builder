@@ -26,4 +26,4 @@ class MapPlot extends MapLocation.MapLocation {
 
 }
 
-module.exports = {MapPlot: MapPlot}
+module.exports = {MapPlot}

@@ -10,11 +10,25 @@ class Map {
         return this.map
     }
 
+    // checks to see if a location in an array exists
+    locationExists(y, x) {
+        let location = this.map[y][x]
+        if( !( location === undefined || location === 0 || location === false ) ) {
+            return true
+        }
+        return false
+    }
+
+    // gathers a location at ( y, x ) if location exists
     getLocation( y, x ) {
-        try {
+        // if (this.locationExists(y, x)) {
+        //     return this.map[y][x]
+        // }
+        if (y < 0 || x < 0) {return false}
+        if (this.map[y][x]) {
             return this.map[y][x]
         }
-        catch {
+        else {
             return false
         }
     }
@@ -60,36 +74,27 @@ class Map {
             this.map[object.positionY][object.positionX]["structure"] = object
         }
 
-    // checks to see if a location in an array exists
-    locationExists(location) {
-        if( !( location === undefined || location === 0 || location === false ) ) {
-            return true
-        }
-        return false
-    }
 
     // gatheres a plot and all plots around it from x y coords
     getNearbyPlotsOnMap( pipe, setValue ) {
-        if ( this.locationExists( this.getLocation( pipe.positionY, pipe.positionX ) ) )     {setValue( this.getLocation( pipe.positionY, pipe.positionX ).getStructure() )}
-        if ( this.locationExists( this.getLocation( pipe.positionY, pipe.positionX - 1 ) ) ) {setValue( this.getLocation( pipe.positionY, pipe.positionX - 1 ).getStructure() )}
-        if ( this.locationExists( this.getLocation( pipe.positionY, pipe.positionX + 1 ) ) ) {setValue( this.getLocation( pipe.positionY, pipe.positionX + 1).getStructure() )}
-        if ( this.locationExists( this.getLocation( pipe.positionY - 1, pipe.positionX ) ) ) {setValue( this.getLocation( pipe.positionY - 1, pipe.positionX ).getStructure() )}
-        if ( this.locationExists( this.getLocation( pipe.positionY + 1, pipe.positionX ) ) ) {setValue( this.getLocation( pipe.positionY + 1, pipe.positionX ).getStructure() )}
+        if ( this.getLocation( pipe.positionY, pipe.positionX ) )     {setValue( this.getLocation( pipe.positionY, pipe.positionX ).getStructure() )}
+        if ( this.getLocation( pipe.positionY, pipe.positionX - 1 ) ) {setValue( this.getLocation( pipe.positionY, pipe.positionX - 1 ).getStructure() )}
+        if ( this.getLocation( pipe.positionY, pipe.positionX + 1 ) ) {setValue( this.getLocation( pipe.positionY, pipe.positionX + 1).getStructure() )}
+        if ( this.getLocation( pipe.positionY - 1, pipe.positionX ) ) {setValue( this.getLocation( pipe.positionY - 1, pipe.positionX ).getStructure() )}
+        if ( this.getLocation( pipe.positionY + 1, pipe.positionX ) ) {setValue( this.getLocation( pipe.positionY + 1, pipe.positionX ).getStructure() )}
     }
     
-    // checks if there is a pipe on a building
-    setBuildingWaterAndElectricity( positionY, positionX ) {
-        let buildingTypes = ["Residence", "Commercial", "Industrial"]
-        let currentLocation = this.getLocation( positionY, positionX )
+    // checks if there is a building at a location
+    checkForBuilding( buildingTypes, currentLocation ) {
         for ( let index = 0; index < buildingTypes.length; index++ ) {
             if ( currentLocation["structure"].constructor.name === buildingTypes[index] ) {
-                if ( currentLocation.getWaterPipe().constructor.name === "WaterPipe" ) {
-                    //this.setNearbyBuildingsRequirements( currentLocation, Building.setBuildingSuppliedWithWater )
+                let waterPipe = currentLocation.getWaterPipe()
+                let electricWire = currentLocation.getElectricityWire()
+                if ( waterPipe.constructor.name === "WaterPipe" && waterPipe.isWaterConnected()) {
                     this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithWater ) 
                     
                 }
-                else if ( currentLocation.getElectricityWire().constructor.name === "ElectricityWire" ) {
-                    //this.setNearbyBuildingsRequirements( currentLocation, Building.setBuildingSuppliedWithElectricity )
+                else if ( electricWire.constructor.name === "ElectricityWire" && electricWire.isWireConnected() ) {
                     this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithElectricity ) 
                 }
                 return
@@ -97,6 +102,13 @@ class Map {
         }
     }
     
+    // checks if there is a pipe on a building
+    setBuildingWaterAndElectricity( positionY, positionX ) {
+        let buildingTypes = ["Residence", "Commercial", "Industrial"]
+        let currentLocation = this.getLocation( positionY, positionX )
+        this.checkForBuilding( buildingTypes, currentLocation )
+    }
+
     // checks for highway object
     highwayCheck( y, x ) {
         // left

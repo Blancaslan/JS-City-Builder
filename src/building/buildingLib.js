@@ -51,9 +51,49 @@ function setBuildingSuppliedWithElectricity( building )
     building.buildingSuppliedWithElectricity = true
 }
 
+function setPipeWater( plot ) 
+{
+    plot.WaterPipe.setHasWater()
+}
+
+function setWireElectric( wire )
+{
+    wire.setHasWire()
+}
+
+function getPipe( structure )
+{
+    return structure.getWaterPipe()
+}
+
+function getWire( structure )
+{
+    return structure.getElectricityWire()
+}
+
+// gives a pipe water
+function transmitProperty( structure, getFunction, setFunction ) {
+    if ( !( structure === false ) && !(getFunction( structure ) === 0 ) ) {
+        setFunction( structure )
+    }
+}
+// spreads water from pump/pipe to nearby pipes
+function transmitProperties( map, structure, getFunction, setFunction ) {
+    transmitProperty( map.getLocation(structure.positionY, structure.positionX), getFunction, setFunction )
+    transmitProperty( map.getLocation(structure.positionY, structure.positionX - 1), getFunction, setFunction )
+    transmitProperty( map.getLocation(structure.positionY, structure.positionX + 1), getFunction, setFunction )
+    transmitProperty( map.getLocation(structure.positionY - 1, structure.positionX), getFunction, setFunction )
+    transmitProperty( map.getLocation(structure.positionY + 1, structure.positionX), getFunction, setFunction )
+}
+
 module.exports = {
     getAllTaxes,
     checkForBuilding,
     setBuildingSuppliedWithWater,
-    setBuildingSuppliedWithElectricity
+    setBuildingSuppliedWithElectricity,
+    setPipeWater,
+    setWireElectric,
+    getPipe,
+    getWire,
+    transmitProperties
 }

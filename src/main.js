@@ -1,7 +1,5 @@
-const prompt = require( 'prompt-sync' )();
 const Map = require( './map' )
 const NonBuildingEntities = require( './nonBuildingEntities' )
-const MapLocation = require( './mapLocation' )
 const Building = require( './building/building' )
 const BuildingLib = require('./building/buildingLib')
 const MapPlot = require('./mapPlot')
@@ -23,10 +21,18 @@ let house4 = new Building.Residence(  1, 3, false, 3, false, false  )
 let house5 = new Building.Residence(  1, 4, false, 3, false, false  )
 let house6 = new Building.Residence(  1, 5, false, 3, false, false  )
 
-let pipe1 = new NonBuildingEntities.WaterPipe( 0, 4 )
+let pump1 = new Building.WaterStation( 0, 0, 0, 0)
+
+let pipe1 = new NonBuildingEntities.WaterPipe( 0, 0 )
+let pipe2 = new NonBuildingEntities.WaterPipe( 0, 1 )
+let pipe3 = new NonBuildingEntities.WaterPipe( 1, 0 )
+let pipe4 = new NonBuildingEntities.WaterPipe( 3, 0 )
 let wire1 = new NonBuildingEntities.ElectricityWire( 0, 3 )
 
 map.addindex( pipe1 )
+map.addindex( pipe2 )
+map.addindex( pipe3 )
+map.addindex( pipe4 )
 map.addindex( wire1 )
 map.addindex(  house1  )
 map.addindex(  house2  )
@@ -34,15 +40,17 @@ map.addindex(  house3  )
 map.addindex(  house4  )
 map.addindex(  house5  )
 map.addindex(  house6  )
+map.addindex(  pump1  )
+
+BuildingLib.transmitProperties( map, pipe1, BuildingLib.getPipe, BuildingLib.setPipeWater )
 
 map.setBuildingWaterAndElectricity( 0, 3 )
 map.setBuildingWaterAndElectricity( 0, 4 )
 
-console.log( map.getLocation( 0, 3 ) )
-console.log( map.getLocation( 0, 4 ) )
-console.log( map.getLocation( 0, 5 ) )
-console.log( map.getLocation( 1, 3 ) )
-console.log( map.getLocation( 1, 4 ) )
-console.log( map.getLocation( 1, 5 ) )
+console.log( map.getLocation( 0, 0 ))
+console.log( map.getLocation( 0, 1 ))
+console.log( map.getLocation( 1, 0 ))
+console.log( map.getLocation( 3, 0 ))
+
 
 console.log( BuildingLib.getAllTaxes( map ) )

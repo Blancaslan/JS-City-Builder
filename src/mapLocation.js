@@ -30,4 +30,4 @@ class MapLocation {
     }
 }
 
-module.exports = {MapLocation: MapLocation}
+module.exports = {MapLocation}
