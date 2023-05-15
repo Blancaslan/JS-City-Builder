@@ -15,7 +15,7 @@ class WaterPipe extends MapLocation.MapLocation {
         this.hasWater = hasWater
     }
 
-    setHasWater() {
+    setWater() {
         this.hasWater = true
     }
 
@@ -35,8 +35,8 @@ class ElectricityWire extends MapLocation.MapLocation {
         this.hasElectricity = hasElectricity
     }
 
-    setHasElectric() {
-        this.hasWater = true
+    setElectric() {
+        this.hasElectricity = true
     }
 
     setHasntElectric() {

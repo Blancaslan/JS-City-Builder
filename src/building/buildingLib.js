@@ -51,14 +51,14 @@ function setBuildingSuppliedWithElectricity( building )
     building.buildingSuppliedWithElectricity = true
 }
 
-function setPipeWater( plot ) 
+function setWater( plot ) 
 {
-    plot.WaterPipe.setHasWater()
+    plot.WaterPipe.setWater()
 }
 
-function setWireElectric( wire )
+function setElectric( plot )
 {
-    wire.setHasWire()
+    plot.ElectricityWire.setElectric()
 }
 
 function getPipe( structure )
@@ -91,8 +91,8 @@ module.exports = {
     checkForBuilding,
     setBuildingSuppliedWithWater,
     setBuildingSuppliedWithElectricity,
-    setPipeWater,
-    setWireElectric,
+    setWater,
+    setElectric,
     getPipe,
     getWire,
     transmitProperties
