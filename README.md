@@ -1,4 +1,6 @@
-This is a city builder game and my first presonal project, It is written in javascript and resembles the hit game City Skylines.
+This is a city builder game and my first personal project, It is written in javascript and resembles the hit game City Skylines.
+
+The entire GUI will be in terminal. I plan on giving it a proper GUI through either a web or desktop app.
 
 How To Run.
 To run the app you have to:
