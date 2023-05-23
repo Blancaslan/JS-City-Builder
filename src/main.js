@@ -1,8 +1,10 @@
 const Map = require( './map' )
-const NonBuildingEntities = require( './nonBuildingEntities' )
+const NonBuildingEntities = require( './buildingNecessities' )
 const Building = require( './building/building' )
 const BuildingLib = require('./building/buildingLib')
 const MapPlot = require('./mapPlot')
+
+let loopStatement = true
 
 let map = new Map.Map([
     [new MapPlot.MapPlot(0, 0, 0, 0, 0), new MapPlot.MapPlot(0, 1, 0, 0, 0), new MapPlot.MapPlot(0, 2, 0, 0, 0), new MapPlot.MapPlot(0, 3, 0, 0, 0), new MapPlot.MapPlot(0, 4, 0, 0, 0), new MapPlot.MapPlot(0, 5, 0, 0, 0), new MapPlot.MapPlot(0, 6, 0, 0, 0)],
@@ -13,6 +15,8 @@ let map = new Map.Map([
     [new MapPlot.MapPlot(5, 0, 0, 0, 0), new MapPlot.MapPlot(5, 1, 0, 0, 0), new MapPlot.MapPlot(5, 2, 0, 0, 0), new MapPlot.MapPlot(5, 3, 0, 0, 0), new MapPlot.MapPlot(5, 4, 0, 0, 0), new MapPlot.MapPlot(5, 5, 0, 0, 0), new MapPlot.MapPlot(5, 6, 0, 0, 0)],
     [new MapPlot.MapPlot(6, 0, 0, 0, 0), new MapPlot.MapPlot(6, 1, 0, 0, 0), new MapPlot.MapPlot(6, 2, 0, 0, 0), new MapPlot.MapPlot(6, 3, 0, 0, 0), new MapPlot.MapPlot(6, 4, 0, 0, 0), new MapPlot.MapPlot(6, 5, 0, 0, 0), new MapPlot.MapPlot(6, 6, 0, 0, 0)]
 ])
+
+let house1 = new Building.Residence( )
 
 let pump1 = new Building.WaterStation( 0, 0, 0, 0)
 let powerStation = new Building.PowerStation( 0, 5, 0, 0)
@@ -39,8 +43,7 @@ map.addindex( wire4 )
 BuildingLib.transmitProperties( map, pump1, BuildingLib.getPipe, BuildingLib.setWater )
 BuildingLib.transmitProperties( map, powerStation, BuildingLib.getWire, BuildingLib.setElectric )
 
-//map.setBuildingWaterAndElectricity( 0, 3 )
-//map.setBuildingWaterAndElectricity( 0, 4 )
+map.setAllBuildingsNecessities()
 
 console.log( map.getLocation( 0, 0 ))
 console.log( map.getLocation( 0, 1 ))

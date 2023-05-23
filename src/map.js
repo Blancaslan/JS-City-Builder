@@ -33,11 +33,11 @@ class Map {
         }
     }
     
-    getMapHeight() {
+    getHeight() {
         return this.map.length
     }
 
-    getMapWidth() {
+    getWidth() {
         return this.map[0].length
     }
 
@@ -90,6 +90,7 @@ class Map {
             if ( currentLocation["structure"].constructor.name === buildingTypes[index] ) {
                 let waterPipe = currentLocation.getWaterPipe()
                 let electricWire = currentLocation.getElectricityWire()
+                
                 if ( waterPipe.constructor.name === "WaterPipe" && waterPipe.isWaterConnected()) {
                     this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithWater ) 
                     
@@ -102,11 +103,17 @@ class Map {
         }
     }
     
-    // checks if there is a pipe on a building
-    setBuildingWaterAndElectricity( positionY, positionX ) {
+    // checks if there is a pipe/wire on a building
+    setBuildingNecessities( positionY, positionX ) {
         let buildingTypes = ["Residence", "Commercial", "Industrial"]
         let currentLocation = this.getLocation( positionY, positionX )
         this.checkForBuilding( buildingTypes, currentLocation )
+    }
+
+    setAllBuildingsNecessities() {
+        for ( let Y = 0; Y < this.getHeight(); Y++ )
+            for ( let X = 0; X < this.getWidth(); X++ )
+                this.setBuildingNecessities( Y, X)
     }
 
     // checks for highway object

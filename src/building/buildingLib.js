@@ -71,13 +71,13 @@ function getWire( structure )
     return structure.getElectricityWire()
 }
 
-// gives a pipe water
+// gives an object a resource
 function transmitProperty( structure, getFunction, setFunction ) {
     if ( !( structure === false ) && !(getFunction( structure ) === 0 ) ) {
         setFunction( structure )
     }
 }
-// spreads water from pump/pipe to nearby pipes
+// spreads resources from object to nearby objects
 function transmitProperties( map, structure, getFunction, setFunction ) {
     transmitProperty( map.getLocation(structure.positionY, structure.positionX), getFunction, setFunction )
     transmitProperty( map.getLocation(structure.positionY, structure.positionX - 1), getFunction, setFunction )
