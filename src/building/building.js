@@ -1,4 +1,4 @@
-var MapLocation = require( '../mapLocation' )
+var MapLocation = require( '../map/mapLocation' )
 class Building extends MapLocation.MapLocation
 {
     constructor( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity ) 

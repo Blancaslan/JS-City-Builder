@@ -1,8 +1,8 @@
-const Map = require( './map' )
-const NonBuildingEntities = require( './buildingNecessities' )
+const Map = require( './map/map' )
+const NonBuildingEntities = require( './building/buildingNecessities' )
 const Building = require( './building/building' )
 const BuildingLib = require('./building/buildingLib')
-const MapPlot = require('./mapPlot')
+const MapPlot = require('./map/mapPlot')
 
 let map = new Map.Map([
     [new MapPlot.MapPlot(0, 0, 0, 0, 0), new MapPlot.MapPlot(0, 1, 0, 0, 0), new MapPlot.MapPlot(0, 2, 0, 0, 0), new MapPlot.MapPlot(0, 3, 0, 0, 0), new MapPlot.MapPlot(0, 4, 0, 0, 0), new MapPlot.MapPlot(0, 5, 0, 0, 0), new MapPlot.MapPlot(0, 6, 0, 0, 0)],

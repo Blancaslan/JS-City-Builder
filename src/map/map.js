@@ -1,5 +1,5 @@
 const prompt = require( 'prompt-sync' )();
-var Building = require ( './building/buildingLib' )
+var Building = require ( '../building/buildingLib' )
 
 class Map {
     constructor( map ) {

@@ -1,4 +1,4 @@
-var MapLocation = require('./mapLocation')
+var MapLocation = require('../map/mapLocation')
 
 // class for making roads
 class Road extends MapLocation.MapLocation {
