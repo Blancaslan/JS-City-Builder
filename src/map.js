@@ -53,28 +53,28 @@ class Map {
         if ( this.getLocation( pipe.positionY + 1, pipe.positionX ) ) {setValue( this.getLocation( pipe.positionY + 1, pipe.positionX ).getStructure() )}
     }
     
-    // checks if there is a building at a location
-    checkForBuilding( buildingTypes, currentLocation ) {
-        if ( currentLocation["structure"].constructor.name === buildingTypes[index] ) {
-            let waterPipe = currentLocation.getWaterPipe()
-            let electricWire = currentLocation.getElectricityWire()
+    // checks if there is are filled in properties on a plot
+    activeProperties( currentLocation ) {
+        let waterPipe = currentLocation.getWaterPipe()
+        let electricWire = currentLocation.getElectricityWire()
 
-            if ( waterPipe.constructor.name === "WaterPipe" && waterPipe.isWaterConnected())
-                this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithWater ) 
+        if ( waterPipe.constructor.name === "WaterPipe" && waterPipe.isWaterConnected())
+            this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithWater ) 
 
-            else if ( electricWire.constructor.name === "ElectricityWire" && electricWire.isWireConnected() )
-                this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithElectricity ) 
+        else if ( electricWire.constructor.name === "ElectricityWire" && electricWire.isWireConnected() )
+            this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithElectricity ) 
 
-            return
-        }
+        return false
     }
     
-    // checks if there is a pipe/wire on a building
+    // checks if there is a building at location and if there are active properties on that building
     setBuildingNecessities( positionY, positionX ) {
         let buildingTypes = ["Residence", "Commercial", "Industrial"]
         let currentLocation = this.getLocation( positionY, positionX )
         for ( let index = 0; index < buildingTypes.length; index++ )
-            this.checkForBuilding( buildingTypes, currentLocation )
+            if ( currentLocation["structure"].constructor.name === buildingTypes[index] )
+                if (!(this.activeProperties( currentLocation )))
+                    return
     }
 
     setAllBuildingNecessities() {
