@@ -10,59 +10,29 @@ class Map {
         return this.map
     }
 
-    // checks to see if a location in an array exists
-    locationExists(y, x) {
-        let location = this.map[y][x]
-        if( !( location === undefined || location === 0 || location === false ) ) {
-            return true
-        }
-        return false
-    }
-
-    // gathers a location at ( y, x ) if location exists
-    getLocation( y, x ) {
-        // if (this.locationExists(y, x)) {
-        //     return this.map[y][x]
-        // }
-        if (y < 0 || x < 0) {return false}
-        if (this.map[y][x]) {
-            return this.map[y][x]
-        }
-        else {
-            return false
-        }
-    }
     
     getHeight() {
         return this.map.length
     }
-
+    
     getWidth() {
         return this.map[0].length
     }
-
+    
     deleteIndex(  positionX, positionY  ) {
         this.map[positionY, positionX] = 0
     }
 
+    // gathers a location at ( y, x ) if location exists
+    getLocation( y, x ) {
+        if ( !(y < 0 || x < 0) && this.map[y][x])
+            return this.map[y][x]
+        else
+            return false
+    }
+
     // places object on the specified location in the specified keys value
     addindex( object ) {
-        // if ( this.map[object.positionY][object.positionX] ) {
-        //     if ( this.map[object.positionY][object.positionX].constructor.name === "Plot" ) {
-        //         console.log(  "You cannot build over or remove the highway piece."  )
-        //         return
-        //     }
-        //     let response = prompt(  "Something already exists here do you want to replace it? y/n"  )
-
-        //     if ( response.toLowerCase() === "y" ) {
-        //         this.map[object.positionY][object.positionX] = object
-        //         return
-        //     }
-        //     else if ( !( response.toLowerCase() === "n" ) ) {
-        //         console.log(  "That response is not in the list of commands, aborting (like your mother should have done)."  )
-        //     }
-        //     return 
-        
         switch (object.constructor.name) {
             case "WaterPipe":
                 this.map[object.positionY][object.positionX]["WaterPipe"] = object
@@ -73,7 +43,6 @@ class Map {
             } 
             this.map[object.positionY][object.positionX]["structure"] = object
         }
-
 
     // gatheres a plot and all plots around it from x y coords
     getNearbyPlotsOnMap( pipe, setValue ) {
@@ -86,20 +55,17 @@ class Map {
     
     // checks if there is a building at a location
     checkForBuilding( buildingTypes, currentLocation ) {
-        for ( let index = 0; index < buildingTypes.length; index++ ) {
-            if ( currentLocation["structure"].constructor.name === buildingTypes[index] ) {
-                let waterPipe = currentLocation.getWaterPipe()
-                let electricWire = currentLocation.getElectricityWire()
-                
-                if ( waterPipe.constructor.name === "WaterPipe" && waterPipe.isWaterConnected()) {
-                    this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithWater ) 
-                    
-                }
-                else if ( electricWire.constructor.name === "ElectricityWire" && electricWire.isWireConnected() ) {
-                    this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithElectricity ) 
-                }
-                return
-            }
+        if ( currentLocation["structure"].constructor.name === buildingTypes[index] ) {
+            let waterPipe = currentLocation.getWaterPipe()
+            let electricWire = currentLocation.getElectricityWire()
+
+            if ( waterPipe.constructor.name === "WaterPipe" && waterPipe.isWaterConnected())
+                this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithWater ) 
+
+            else if ( electricWire.constructor.name === "ElectricityWire" && electricWire.isWireConnected() )
+                this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithElectricity ) 
+
+            return
         }
     }
     
@@ -107,10 +73,11 @@ class Map {
     setBuildingNecessities( positionY, positionX ) {
         let buildingTypes = ["Residence", "Commercial", "Industrial"]
         let currentLocation = this.getLocation( positionY, positionX )
-        this.checkForBuilding( buildingTypes, currentLocation )
+        for ( let index = 0; index < buildingTypes.length; index++ )
+            this.checkForBuilding( buildingTypes, currentLocation )
     }
 
-    setAllBuildingsNecessities() {
+    setAllBuildingNecessities() {
         for ( let Y = 0; Y < this.getHeight(); Y++ )
             for ( let X = 0; X < this.getWidth(); X++ )
                 this.setBuildingNecessities( Y, X)

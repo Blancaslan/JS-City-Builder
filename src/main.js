@@ -4,8 +4,6 @@ const Building = require( './building/building' )
 const BuildingLib = require('./building/buildingLib')
 const MapPlot = require('./mapPlot')
 
-let loopStatement = true
-
 let map = new Map.Map([
     [new MapPlot.MapPlot(0, 0, 0, 0, 0), new MapPlot.MapPlot(0, 1, 0, 0, 0), new MapPlot.MapPlot(0, 2, 0, 0, 0), new MapPlot.MapPlot(0, 3, 0, 0, 0), new MapPlot.MapPlot(0, 4, 0, 0, 0), new MapPlot.MapPlot(0, 5, 0, 0, 0), new MapPlot.MapPlot(0, 6, 0, 0, 0)],
     [new MapPlot.MapPlot(1, 0, 0, 0, 0), new MapPlot.MapPlot(1, 1, 0, 0, 0), new MapPlot.MapPlot(1, 2, 0, 0, 0), new MapPlot.MapPlot(1, 3, 0, 0, 0), new MapPlot.MapPlot(1, 4, 0, 0, 0), new MapPlot.MapPlot(1, 5, 0, 0, 0), new MapPlot.MapPlot(1, 6, 0, 0, 0)],
@@ -43,17 +41,8 @@ map.addindex( wire4 )
 BuildingLib.transmitProperties( map, pump1, BuildingLib.getPipe, BuildingLib.setWater )
 BuildingLib.transmitProperties( map, powerStation, BuildingLib.getWire, BuildingLib.setElectric )
 
-map.setAllBuildingsNecessities()
+map.setAllBuildingNecessities()
 
-console.log( map.getLocation( 0, 0 ))
-console.log( map.getLocation( 0, 1 ))
-console.log( map.getLocation( 1, 0 ))
-console.log( map.getLocation( 3, 0 ))
-
-console.log( map.getLocation( 0, 5 ))
-console.log( map.getLocation( 0, 4 ))
-console.log( map.getLocation( 1, 5 ))
-console.log( map.getLocation( 1, 4 ))
-
+console.log( map.getMap() )
 
 console.log( BuildingLib.getAllTaxes( map ) )
