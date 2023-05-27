@@ -19,11 +19,11 @@ function getTax( building ) {
 function getAllTaxes( Map ) {
     let cashMoney = 0
     
-    for ( let mapCoordY = 0; mapCoordY < Map.map.length; mapCoordY++ ) 
+    for ( let mapCoordY = 0; mapCoordY < Map.getHeight(); mapCoordY++ ) 
     {
-        for ( let mapCoordX = 0; mapCoordX < Map.map[mapCoordY].length; mapCoordX++ ) 
+        for ( let mapCoordX = 0; mapCoordX < Map.getWidth(); mapCoordX++ ) 
         {
-            cashMoney += getTax( Map.map[mapCoordY][mapCoordX]["structure"] ) 
+            cashMoney += getTax( Map.getLocation( mapCoordY, mapCoordX )["structure"] ) 
         }
     }
     
@@ -77,6 +77,7 @@ function transmitProperty( structure, getFunction, setFunction ) {
         setFunction( structure )
     }
 }
+
 // spreads resources from object to nearby objects
 function transmitProperties( map, structure, getFunction, setFunction ) {
     transmitProperty( map.getLocation(structure.positionY, structure.positionX), getFunction, setFunction )

@@ -1,8 +1,9 @@
 const Map = require( './map/map' )
 const NonBuildingEntities = require( './building/buildingNecessities' )
-const Building = require( './building/building' )
+const Building = require( './building/Building' )
 const BuildingLib = require('./building/buildingLib')
 const MapPlot = require('./map/mapPlot')
+const resourceBuildings = require('./government/resourceBuildings')
 
 let map = new Map.Map([
     [new MapPlot.MapPlot(0, 0, 0, 0, 0), new MapPlot.MapPlot(0, 1, 0, 0, 0), new MapPlot.MapPlot(0, 2, 0, 0, 0), new MapPlot.MapPlot(0, 3, 0, 0, 0), new MapPlot.MapPlot(0, 4, 0, 0, 0), new MapPlot.MapPlot(0, 5, 0, 0, 0), new MapPlot.MapPlot(0, 6, 0, 0, 0)],
@@ -14,35 +15,28 @@ let map = new Map.Map([
     [new MapPlot.MapPlot(6, 0, 0, 0, 0), new MapPlot.MapPlot(6, 1, 0, 0, 0), new MapPlot.MapPlot(6, 2, 0, 0, 0), new MapPlot.MapPlot(6, 3, 0, 0, 0), new MapPlot.MapPlot(6, 4, 0, 0, 0), new MapPlot.MapPlot(6, 5, 0, 0, 0), new MapPlot.MapPlot(6, 6, 0, 0, 0)]
 ])
 
-let house1 = new Building.Residence( )
+let house1 = new Building.Residence( 1, 0, false, 3, false, false )
+let waterStation = new resourceBuildings.WaterStation( 0, 0, 0, 0 )
+let powerStation = new resourceBuildings.PowerStation( 0, 1, 0, 0 )
 
-let pump1 = new Building.WaterStation( 0, 0, 0, 0)
-let powerStation = new Building.PowerStation( 0, 5, 0, 0)
+let pipe1 = new NonBuildingEntities.WaterPipe( 0, 0, false)
+let wire1 = new NonBuildingEntities.ElectricityWire( 0, 1, false)
 
-let pipe1 = new NonBuildingEntities.WaterPipe( 0, 0 )
-let pipe2 = new NonBuildingEntities.WaterPipe( 0, 1 )
-let pipe3 = new NonBuildingEntities.WaterPipe( 1, 0 )
-let pipe4 = new NonBuildingEntities.WaterPipe( 3, 0 )
-let wire1 = new NonBuildingEntities.ElectricityWire( 0, 5 )
-let wire2 = new NonBuildingEntities.ElectricityWire( 0, 4 )
-let wire3 = new NonBuildingEntities.ElectricityWire( 1, 5 )
-let wire4 = new NonBuildingEntities.ElectricityWire( 1, 4 )
+map.addIndex( house1 )
+map.addIndex( waterStation )
+map.addIndex( powerStation )
+map.addIndex( pipe1 )
+map.addIndex( wire1 )
 
-map.addindex(  pump1  )
-map.addindex( pipe1 )
-map.addindex( pipe2 )
-map.addindex( pipe3 )
-map.addindex( pipe4 )
-map.addindex( wire1 )
-map.addindex( wire2 )
-map.addindex( wire3 )
-map.addindex( wire4 )
+console.log( map.getLocation( 0, 0 ))
+console.log( map.getLocation( 1, 0 ))
 
-BuildingLib.transmitProperties( map, pump1, BuildingLib.getPipe, BuildingLib.setWater )
+BuildingLib.transmitProperties( map, waterStation, BuildingLib.getPipe, BuildingLib.setWater )
 BuildingLib.transmitProperties( map, powerStation, BuildingLib.getWire, BuildingLib.setElectric )
 
 map.setAllBuildingNecessities()
 
-console.log( map.getMap() )
+console.log( map.getLocation( 0, 0 ))
+console.log( map.getLocation( 1, 0 ))
 
 console.log( BuildingLib.getAllTaxes( map ) )

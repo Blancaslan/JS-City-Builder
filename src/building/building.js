@@ -29,9 +29,7 @@ class Building extends MapLocation.MapLocation
 
 class Residence extends Building 
 {
-
     constructor( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity ) 
-
     {
         super( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity )
     }
@@ -39,9 +37,7 @@ class Residence extends Building
 
 class Commercial extends Building 
 {
-
     constructor( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity ) 
-
     {
         super( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity )
     }
@@ -49,47 +45,15 @@ class Commercial extends Building
 
 class Industrial extends Building 
 {
-
     constructor( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity )
-
     {
         super( positionY, positionX, isRoadAccessable, buildingTier, buildingSuppliedWithWater, buildingSuppliedWithElectricity )
     }
 }
 
-class Government extends Building 
-{
-
-    constructor( positionY, positionX, isRoadAccessable, taxCost, radius )
-
-    {
-        super( positionY, positionX, isRoadAccessable )
-
-        this.taxCost = taxCost
-        this.radius = radius
-    }
-}
-
-class PowerStation extends Government
-{
-    constructor( positionY, positionX, taxCost, radius )
-    {
-        super( positionY, positionX, taxCost, radius )
-    }
-}
-
-class WaterStation extends Government
-{
-    constructor( positionY, positionX, taxCost, radius )
-    {
-        super( positionY, positionX, taxCost, radius )
-    }
-}
-
 module.exports = {
+    Building,
     Residence,
     Commercial,
-    Industrial,
-    WaterStation,
-    PowerStation
+    Industrial
 }

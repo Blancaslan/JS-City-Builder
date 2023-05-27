@@ -32,16 +32,19 @@ class Map {
     }
 
     // places object on the specified location in the specified keys value
-    addindex( object ) {
+    addIndex( object ) {
+        let objectLocation = this.getLocation( object.positionY, object.positionX )
+
         switch (object.constructor.name) {
             case "WaterPipe":
-                this.map[object.positionY][object.positionX]["WaterPipe"] = object
+                objectLocation["WaterPipe"] = object
                 return
             case "ElectricityWire":
-                this.map[object.positionY][object.positionX]["ElectricityWire"] = object
+                objectLocation["ElectricityWire"] = object
                 return
+            default:
+                objectLocation["structure"] = object
             } 
-            this.map[object.positionY][object.positionX]["structure"] = object
         }
 
     // gatheres a plot and all plots around it from x y coords

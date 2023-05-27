@@ -1,7 +1,7 @@
-var MapLocation = require('../map/mapLocation')
+const { MapLocation } = require('../map/mapLocation')
 
 // class for making roads
-class Road extends MapLocation.MapLocation {
+class Road extends MapLocation {
     constructor( positionY, positionX, isRoadAccessable ) {
         super( positionY, positionX )
         this.isRoadAccessable = isRoadAccessable
@@ -9,7 +9,7 @@ class Road extends MapLocation.MapLocation {
 
 }
 
-class WaterPipe extends MapLocation.MapLocation {
+class WaterPipe extends MapLocation {
     constructor( positionY, positionX, hasWater ) {
         super( positionY, positionX )
         this.hasWater = hasWater
@@ -29,7 +29,7 @@ class WaterPipe extends MapLocation.MapLocation {
     }
 }
 
-class ElectricityWire extends MapLocation.MapLocation {
+class ElectricityWire extends MapLocation {
     constructor( positionY, positionX, hasElectricity ) {
         super( positionY, positionX, hasElectricity )
         this.hasElectricity = hasElectricity
