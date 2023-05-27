@@ -1,18 +1,26 @@
-const { Government } = require('./Government')
+const { MapLocation } = require('../map/mapLocation')
 
-class PowerStation extends Government
+class ResourceGatherers extends MapLocation
 {
-    constructor( positionY, positionX, taxCost, radius )
+    constructor( positionY, positionX )
     {
-        super( positionY, positionX, taxCost, radius )
+        super( positionY, positionX )
     }
 }
 
-class WaterStation extends Government
+class PowerStation extends ResourceGatherers
 {
-    constructor( positionY, positionX, taxCost, radius )
+    constructor( positionY, positionX )
     {
-        super( positionY, positionX, taxCost, radius )
+        super( positionY, positionX )
+    }
+}
+
+class WaterStation extends ResourceGatherers
+{
+    constructor( positionY, positionX )
+    {
+        super( positionY, positionX )
     }
 }
 

@@ -1,5 +1,5 @@
 const Map = require( './map/map' )
-const NonBuildingEntities = require( './building/buildingNecessities' )
+const NonBuildingEntities = require( './subStructures/subStructures' )
 const Building = require( './building/Building' )
 const BuildingLib = require('./building/buildingLib')
 const MapPlot = require('./map/mapPlot')

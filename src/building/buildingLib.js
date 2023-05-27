@@ -80,11 +80,16 @@ function transmitProperty( structure, getFunction, setFunction ) {
 
 // spreads resources from object to nearby objects
 function transmitProperties( map, structure, getFunction, setFunction ) {
-    transmitProperty( map.getLocation(structure.positionY, structure.positionX), getFunction, setFunction )
-    transmitProperty( map.getLocation(structure.positionY, structure.positionX - 1), getFunction, setFunction )
-    transmitProperty( map.getLocation(structure.positionY, structure.positionX + 1), getFunction, setFunction )
-    transmitProperty( map.getLocation(structure.positionY - 1, structure.positionX), getFunction, setFunction )
-    transmitProperty( map.getLocation(structure.positionY + 1, structure.positionX), getFunction, setFunction )
+    let locations = [
+        map.getLocation(structure.positionY, structure.positionX),
+        map.getLocation(structure.positionY, structure.positionX - 1), 
+        map.getLocation(structure.positionY, structure.positionX + 1), 
+        map.getLocation(structure.positionY - 1, structure.positionX), 
+        map.getLocation(structure.positionY + 1, structure.positionX)
+    ]
+
+    for (let index = 0; index < locations.length; index++)
+        transmitProperty( locations[index], getFunction, setFunction )
 }
 
 module.exports = {
