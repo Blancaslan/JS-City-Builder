@@ -30,14 +30,11 @@ function getAllTaxes( Map ) {
     return cashMoney
 }
 
-function checkForBuilding( plot ) {
-    if (plot.getStructure() === 0) {return false}
-    let buildingTypes = ["Residence", "Commercial", "Industrial"]
-    for ( let index = 0; index < buildingTypes.length; index++ ) {
-        if ( plot.getStructure().constructor.name === buildingTypes[index] ) {
-            return true
-        }
-    }
+// checks if the structure in a plot is a building
+function checkForBuilding( currentLocation ) {
+    let locationStructureName = currentLocation.getStructure().constructor.name
+        if (locationStructureName === "Residence" || locationStructureName === "Commercial" || locationStructureName === "Industrial")
+        return true
     return false
 }
 
@@ -56,9 +53,9 @@ function setWater( plot )
     plot.WaterPipe.setWater()
 }
 
-function setElectric( plot )
+function setElectricity( plot )
 {
-    plot.ElectricityWire.setElectric()
+    plot.ElectricityWire.setElectricity()
 }
 
 function getPipe( structure )
@@ -98,7 +95,7 @@ module.exports = {
     setBuildingSuppliedWithWater,
     setBuildingSuppliedWithElectricity,
     setWater,
-    setElectric,
+    setElectricity,
     getPipe,
     getWire,
     transmitProperties

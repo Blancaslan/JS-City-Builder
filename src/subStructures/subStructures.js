@@ -15,8 +15,9 @@ class WaterPipe extends MapLocation {
         this.hasWater = false
     }
     
-    isWaterConnected() {
-        if (this.hasWater) {return true}
+    pipeFilled() {
+        if (this.hasWater) 
+            return true
         return false
     }
 }
@@ -27,7 +28,7 @@ class ElectricityWire extends MapLocation {
         this.hasElectricity = hasElectricity
     }
     
-    setElectric() {
+    setElectricity() {
         this.hasElectricity = true
     }
     
@@ -35,7 +36,7 @@ class ElectricityWire extends MapLocation {
         this.hasWater = false
     }
     
-    isWireConnected() {
+    wireCharged() {
         if (this.hasElectricity) {return true}
         return false
     }

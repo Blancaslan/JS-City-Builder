@@ -20,7 +20,7 @@ let waterStation = new resourceBuildings.WaterStation( 0, 0, 0, 0 )
 let powerStation = new resourceBuildings.PowerStation( 0, 1, 0, 0 )
 
 let pipe1 = new NonBuildingEntities.WaterPipe( 0, 0, false)
-let wire1 = new NonBuildingEntities.ElectricityWire( 0, 1, false)
+let wire1 = new NonBuildingEntities.ElectricityWire( 0, 0, false)
 
 map.addIndex( house1 )
 map.addIndex( waterStation )
@@ -32,7 +32,7 @@ console.log( map.getLocation( 0, 0 ))
 console.log( map.getLocation( 1, 0 ))
 
 BuildingLib.transmitProperties( map, waterStation, BuildingLib.getPipe, BuildingLib.setWater )
-BuildingLib.transmitProperties( map, powerStation, BuildingLib.getWire, BuildingLib.setElectric )
+BuildingLib.transmitProperties( map, powerStation, BuildingLib.getWire, BuildingLib.setElectricity )
 
 map.setAllBuildingNecessities()
 

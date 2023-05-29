@@ -1,5 +1,4 @@
-const prompt = require( 'prompt-sync' )();
-var Building = require ( '../building/buildingLib' )
+const BuildingLib = require ( '../building/buildingLib' )
 
 class Map {
     constructor( map ) {
@@ -49,41 +48,45 @@ class Map {
 
     // gatheres a plot and all plots around it from x y coords
     getNearbyPlotsOnMap( pipe, setValue ) {
-        if ( this.getLocation( pipe.positionY, pipe.positionX ) )     {setValue( this.getLocation( pipe.positionY, pipe.positionX ).getStructure() )}
-        if ( this.getLocation( pipe.positionY, pipe.positionX - 1 ) ) {setValue( this.getLocation( pipe.positionY, pipe.positionX - 1 ).getStructure() )}
-        if ( this.getLocation( pipe.positionY, pipe.positionX + 1 ) ) {setValue( this.getLocation( pipe.positionY, pipe.positionX + 1).getStructure() )}
-        if ( this.getLocation( pipe.positionY - 1, pipe.positionX ) ) {setValue( this.getLocation( pipe.positionY - 1, pipe.positionX ).getStructure() )}
-        if ( this.getLocation( pipe.positionY + 1, pipe.positionX ) ) {setValue( this.getLocation( pipe.positionY + 1, pipe.positionX ).getStructure() )}
+        let locations = [
+            this.getLocation( pipe.positionY, pipe.positionX ),
+            this.getLocation( pipe.positionY, pipe.positionX - 1 ),
+            this.getLocation( pipe.positionY, pipe.positionX + 1 ),
+            this.getLocation( pipe.positionY - 1, pipe.positionX ),
+            this.getLocation( pipe.positionY + 1, pipe.positionX )
+        ]
+
+        for (let index = 0; index < locations.length; index++) {
+            if (locations[index] && BuildingLib.checkForBuilding(locations[index]))
+                setValue(locations[index].getStructure())
+        }
     }
-    
-    // checks if there is are filled in properties on a plot
+     
+    // checks if there are filled in properties on a plot
     activeProperties( currentLocation ) {
         let waterPipe = currentLocation.getWaterPipe()
         let electricWire = currentLocation.getElectricityWire()
 
-        if ( waterPipe.constructor.name === "WaterPipe" && waterPipe.isWaterConnected())
-            this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithWater ) 
+        if ( waterPipe.constructor.name === "WaterPipe" && waterPipe.pipeFilled())
+                this.getNearbyPlotsOnMap( currentLocation, BuildingLib.setBuildingSuppliedWithWater ) 
 
-        else if ( electricWire.constructor.name === "ElectricityWire" && electricWire.isWireConnected() )
-            this.getNearbyPlotsOnMap( currentLocation, Building.setBuildingSuppliedWithElectricity ) 
-
-        return false
+        if ( electricWire.constructor.name === "ElectricityWire" && electricWire.wireCharged() )
+            this.getNearbyPlotsOnMap( currentLocation, BuildingLib.setBuildingSuppliedWithElectricity ) 
     }
     
     // checks if there is a building at location and if there are active properties on that building
     setBuildingNecessities( positionY, positionX ) {
-        let buildingTypes = ["Residence", "Commercial", "Industrial"]
         let currentLocation = this.getLocation( positionY, positionX )
-        for ( let index = 0; index < buildingTypes.length; index++ )
-            if ( currentLocation["structure"].constructor.name === buildingTypes[index] )
-                if (!(this.activeProperties( currentLocation )))
-                    return
+        this.activeProperties( currentLocation )
     }
 
+    // sets structures to have a resource (such as water or electric)
     setAllBuildingNecessities() {
-        for ( let Y = 0; Y < this.getHeight(); Y++ )
-            for ( let X = 0; X < this.getWidth(); X++ )
-                this.setBuildingNecessities( Y, X)
+        let mapHeight = this.getHeight()
+        let mapWidth = this.getWidth()
+        for ( let y = 0; y < mapHeight; y++ )
+            for ( let x = 0; x < mapWidth; x++ )
+                this.setBuildingNecessities( y, x )
     }
 
     // checks for highway object
