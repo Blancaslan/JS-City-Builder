@@ -1,8 +1,20 @@
-const BuildingLib = require ( '../building/buildingLib' )
+const BuildingLib = require( '../building/buildingLib' )
+const { MapPlot } = require('./mapPlot')
 
 class Map {
-    constructor( map ) {
-        this.map = map
+    constructor() {
+        this.map = []
+    }
+
+    initialiseMap( width, height ) {
+        for (let indexHeight = 0; indexHeight < height; indexHeight++) {
+            this.map.push([])
+            for (let indexWidth = 0; indexWidth < width; indexWidth++) {
+                let newPlot = new MapPlot( indexHeight, indexWidth, undefined, undefined, undefined )
+                this.map[this.map.length - 1].push( newPlot )
+            }
+        }
+        this.map
     }
 
     getMap() {
@@ -22,6 +34,10 @@ class Map {
         this.map[positionY, positionX] = 0
     }
 
+    getRow( index ) {
+        return this.map[index]
+    }
+
     // gathers a location at ( y, x ) if location exists
     getLocation( y, x ) {
         if ( !(y < 0 || x < 0) && this.map[y][x])
@@ -32,7 +48,15 @@ class Map {
 
     // places object on the specified location in the specified keys value
     addIndex( object ) {
+        if ( object === undefined ) {
+            console.log("Building was invalid")
+            return false
+        }
         let objectLocation = this.getLocation( object.positionY, object.positionX )
+        if (!objectLocation) {
+            console.log("Building placement was invalid")
+            return false
+        }
 
         switch (object.constructor.name) {
             case "WaterPipe":
