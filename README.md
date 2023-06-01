@@ -24,7 +24,7 @@ FYI: It's still very work in progress so some commits being pushed might have we
 
 '/substructures' stores all classes, methods and function to do with sub-structures.
 
-What is the difference between structures and sub-structures?
+WHAT IS THE DIFFERENCE BETWEEN STRUCTURES AND SUB-STRUCTURES?
 
 Structures are the main class that is on the plot.  e.g: Residence or WaterStation.
 Sub-structures can also and are also on the same plot as structures but are not shown on the main map. e.g: Pipe or Wire.
