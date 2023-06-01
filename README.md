@@ -10,6 +10,10 @@ Download the code,
 open it up in an IDE install all dependencies,
 then run the main.js file in "/src/gameloop" using "node main.js" in a terminal.
 
+DEPENDENCIES: 
+  Node.js^19.2.0+,
+  prompt
+
 I try my best to keep the code as modular and reusable as possible to save development time and performance.
 
 FYI: It's still very work in progress so some commits being pushed might have weird code that isnt used anymore/half finished code.
