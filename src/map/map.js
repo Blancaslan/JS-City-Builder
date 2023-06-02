@@ -40,10 +40,26 @@ class Map {
 
     // gathers a location at ( y, x ) if location exists
     getLocation( y, x ) {
-        if ( !(y < 0 || x < 0) && this.map[y][x])
+        if (this.widthHeightCheck( y, x ))
             return this.map[y][x]
         else
             return false
+    }
+
+    widthHeightCheck( y, x ) {
+        const mapHeight = this.getHeight()
+        const mapWidth = this.getWidth()
+
+        switch ([y, x]) {
+            case y < 0 || y > mapHeight:
+                console.log("The Y coordinate is invalid.")
+                return false
+            case x < 0 || x > mapWidth:
+                console.log("The X coordinate is invalid.")
+                return false
+            default:
+                return true
+            }
     }
 
     // places object on the specified location in the specified keys value

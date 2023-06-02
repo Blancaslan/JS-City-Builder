@@ -1,29 +1,36 @@
 // gathers tax from one non-government building
-function getTax( building ) {
-    if ( building.buildingSuppliedWithWater === true && building.buildingSuppliedWithElectricity === true )
+function getTax( plot ) {
+    const structure = plot["structure"]
+    if (structure === undefined)
+        return 0
+    if ( structure.buildingSuppliedWithWater === true && structure.buildingSuppliedWithElectricity === true )
     {
-        switch ( building.constructor.name ) 
+        switch ( structure.constructor.name ) 
         {
             case "Residence":
-                return {1: 100, 2: 200, 3: 300}[building.buildingTier]
+                return {1: 100, 2: 200, 3: 300}[structure.buildingTier]
             case "Commercial":
-                return {1: 200, 2: 400, 3: 600}[building.buildingTier]
+                return {1: 200, 2: 400, 3: 600}[structure.buildingTier]
             case "Industrial":
-                return {1: 300, 2: 600, 3: 900}[building.buildingTier]
+                return {1: 300, 2: 600, 3: 900}[structure.buildingTier]
         }
     }
     return 0
 }
             
 // gathers taxes from all non-government buildings
-function getAllTaxes( Map ) {
+function getAllTaxes( map ) {
     let cashMoney = 0
+    let mapHeight = map.getHeight()
+    let mapWidth = map.getWidth()
     
-    for ( let mapCoordY = 0; mapCoordY < Map.getHeight(); mapCoordY++ ) 
+    for ( let mapCoordY = 0; mapCoordY < mapHeight; mapCoordY++ ) 
     {
-        for ( let mapCoordX = 0; mapCoordX < Map.getWidth(); mapCoordX++ ) 
+        for ( let mapCoordX = 0; mapCoordX < mapWidth; mapCoordX++ ) 
         {
-            cashMoney += getTax( Map.getLocation( mapCoordY, mapCoordX )["structure"] ) 
+            const location = map.getLocation( mapCoordY, mapCoordX )
+            if (!(location) === false)
+                cashMoney += getTax( location ) 
         }
     }
     

@@ -1,5 +1,6 @@
 const prompt = require('prompt')
 const building = require('../building/Building')
+const { coordinateCheck } = require('../map/mapchecks')
 
 async function userLoop( map ) {
   const taskbar = await prompt.get({
@@ -35,39 +36,34 @@ async function build( map ) {
       }
     }
   })
-  return await structureSelector( map, response )
+  return await organs( map, response )
 }
 
-async function structureSelector( map, response ) {
-  const {x, y} = await location()
-  switch ( response["building"] ) {
-    case "house":
-      map.addIndex(new building.Residence( y - 1, x - 1, false, 1, false, false))
-      break
-    case "office":
-      break
-    case "factory":
-      break
-    case "waterstation":
-      break
-    case "powerstation":
-      break
-    case "pipe":
-      break
-    case "wire":
-      break
-    default:
-      console.log("That building doesn't exist.")
-      return
+async function organs( map, response ) {
+  const {x, y} = await organiseCoordinates( map )
+  if (x["condition"] && y["condition"]) {
+    structureSelector( map, response, y["value"], x["value"])
   }
 }
 
-async function location() {
+async function organiseCoordinates( map ) {
   console.log("Could you give the coordinates of where you want to build?")
-  return await getCoordinates()
+
+  const rawCoordinates = await getRawCoordinates()
+  let {x, y} = convertRawCoordinates( rawCoordinates )
+
+  x = coordinateCheck( map, x, "x" )
+  y = coordinateCheck( map, y, "y" )
+  return {"x": x, "y": y}
 }
 
-async function getCoordinates( ) {
+function convertRawCoordinates( rawCoordinates ) {
+  const x = rawCoordinates["x"] - 1
+  const y = rawCoordinates["y"] - 1
+  return {"x": x, "y": y}
+}
+
+async function getRawCoordinates() {
   return await prompt.get({
     properties: {
       x: {
@@ -83,6 +79,32 @@ async function getCoordinates( ) {
     }
   })
 }
+
+
+function structureSelector( map, response, y, x ) {
+  switch ( response["building"] ) {
+    case "house":
+      map.addIndex(new building.Residence( y, x, false, 1, false, false))
+      break
+    case "office":
+      map.addIndex(new building.Commercial( y, x, false, 1, false, false))
+      break
+    case "factory":
+      map.addIndex(new building.Industrial( y, x, false, 1, false, false))
+      break
+    case "waterstation":
+      break
+    case "powerstation":
+      break
+    case "pipe":
+      break
+    case "wire":
+      break
+    default:
+      console.log("That building doesn't exist.")
+  }
+}
+
 
 function displayMap( map ) {
   let mapHeight = map.getHeight()
