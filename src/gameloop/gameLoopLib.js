@@ -6,7 +6,7 @@ async function userLoop( map ) {
   const taskbar = await prompt.get({
     properties: {
       taskbar: {
-        description: "What do you want to do? (build, destory, exit): ",
+        description: "What do you want to do? (build, destory, exit) ",
         type: "string",
         required: true
       }
@@ -14,14 +14,14 @@ async function userLoop( map ) {
   })
   switch ( taskbar.taskbar ) {
       case "exit":
-        console.log("Exiting Game.")
+        console.log("Exiting Game...")
         process.exit()
       case "build":
         console.log("Entered Build Mode.")
         await build( map )
         break
       case "destroy":
-        console.log("Where do you want to destoy?")
+        console.log("Entered Destroy Mode.")
         break
   }
 }
@@ -30,7 +30,7 @@ async function build( map ) {
   const response = await prompt.get({
     properties: {
       building: {
-        description: "What do you want to build? (house, office, factory, waterstation, powerstation, pipe, wire): ",
+        description: "What do you want to build? (house, office, factory, waterstation, powerstation, pipe, wire) ",
         type: "string",
         required: true
       }
@@ -47,7 +47,7 @@ async function organs( map, response ) {
 }
 
 async function organiseCoordinates( map ) {
-  console.log("Could you give the coordinates of where you want to build?")
+  console.log("Could you give the coordinates of where you want to build? ")
 
   const rawCoordinates = await getRawCoordinates()
   let {x, y} = convertRawCoordinates( rawCoordinates )
@@ -67,12 +67,12 @@ async function getRawCoordinates() {
   return await prompt.get({
     properties: {
       x: {
-        description: "X: ",
+        description: "X",
         type: "number",
         required: true
       },
       y: {
-        description: "Y: ",
+        description: "Y",
         type: "number",
         required: true
       }
@@ -105,26 +105,36 @@ function structureSelector( map, response, y, x ) {
   }
 }
 
+function outputCurrency( currency ) {
+  console.log("Money: " + currency + "\n")
+}
 
-function displayMap( map ) {
+function outputStructure( map, heightIndex, widthIndex ) {
+  let currentLocation = map.getLocation( heightIndex, widthIndex )
+
+  if (!(currentLocation["structure"] === undefined))
+    process.stdout.write(currentLocation["structure"].constructor.name[0] + ' ')
+  else 
+    process.stdout.write(0 + ' ')
+}
+
+function displayUI( map, currency ) {
+  console.clear()
+  outputCurrency( currency )
   let mapHeight = map.getHeight()
   let mapWidth = map.getWidth()
   for (let heightIndex = 0; heightIndex < mapHeight; heightIndex++) {
-    console.log()
     for (let widthIndex = 0; widthIndex < mapWidth; widthIndex++) {
-      let currentLocation = map.getLocation( heightIndex, widthIndex )
-      if (!(currentLocation["structure"] === undefined))
-        process.stdout.write("" + currentLocation["structure"].constructor.name[0])
-      else 
-        process.stdout.write("" + 0)
-
+      outputStructure( map, heightIndex, widthIndex )
     }
+    console.log()
   }
+  console.log("\n-----------\n")
   return
 }
 
 module.exports = {
   userLoop,
   build,
-  displayMap
+  displayUI
 }

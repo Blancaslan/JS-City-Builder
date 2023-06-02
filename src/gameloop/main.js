@@ -1,30 +1,27 @@
-const prompt = require('prompt');
-const { Map } = require( '../map/map' )
-const { userLoop, displayMap } = require('./gameLoopLib')
 const { getAllTaxes } = require('../building/buildingLib')
+const { userLoop, displayUI } = require('./gameLoopLib')
+const { Map } = require( '../map/map' )
 
-let currency = 0
 const mapWidth = 6
 const mapHeight = 6
 
 let map = new Map()
 map.initialiseMap( mapWidth, mapHeight )
 
+let currency = 0
+
 setInterval(() => {
   currency += getAllTaxes( map )
   currency++
-}, 1000);
+}, 200);
 
 
 async function gameLoop() {
-  displayMap( map )
-
-  console.log(currency)
+  displayUI( map, currency )
 
   await userLoop( map )
 
   setTimeout( gameLoop, 0 );
 }
-
 
 gameLoop()
