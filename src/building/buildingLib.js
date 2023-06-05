@@ -1,17 +1,17 @@
 // gathers tax from one non-government building
-function getTax( plot ) {
-    const structure = plot["structure"]
+function getTax( currentPlot ) {
+    const structure = currentPlot["structure"]
     if (structure === undefined)
         return 0
     if ( structure.buildingSuppliedWithWater === true && structure.buildingSuppliedWithElectricity === true )
     {
         switch ( structure.constructor.name ) 
         {
-            case "Residence":
+            case "House":
                 return {1: 100, 2: 200, 3: 300}[structure.buildingTier]
-            case "Commercial":
+            case "Office":
                 return {1: 200, 2: 400, 3: 600}[structure.buildingTier]
-            case "Industrial":
+            case "Factory":
                 return {1: 300, 2: 600, 3: 900}[structure.buildingTier]
         }
     }
@@ -19,18 +19,17 @@ function getTax( plot ) {
 }
             
 // gathers taxes from all non-government buildings
-function getAllTaxes( map ) {
+function getAllTax( map ) {
     let cashMoney = 0
-    let mapHeight = map.getHeight()
-    let mapWidth = map.getWidth()
+    const mapSize = map.getMapWidthAndHeight()
     
-    for ( let mapCoordY = 0; mapCoordY < mapHeight; mapCoordY++ ) 
+    for ( let mapCoordY = 0; mapCoordY < mapSize["mapHeight"]; mapCoordY++ ) 
     {
-        for ( let mapCoordX = 0; mapCoordX < mapWidth; mapCoordX++ ) 
+        for ( let mapCoordX = 0; mapCoordX < mapSize["mapWidth"]; mapCoordX++ ) 
         {
-            const location = map.getLocation( mapCoordY, mapCoordX )
-            if (!(location) === false)
-                cashMoney += getTax( location ) 
+            const currentPlot = map.getLocation( mapCoordY, mapCoordX )
+            if (!(currentPlot) === false)
+                cashMoney += getTax( currentPlot ) 
         }
     }
     
@@ -38,21 +37,21 @@ function getAllTaxes( map ) {
 }
 
 // checks if the structure in a plot is a building
-function checkForBuilding( currentLocation ) {
-    let locationStructureName = currentLocation.getStructure().constructor.name
-        if (locationStructureName === "Residence" || locationStructureName === "Commercial" || locationStructureName === "Industrial")
+function checkForStructure( currentPlot ) {
+    let structureName = currentPlot.getStructure().constructor.name
+    if (structureName === "House" || structureName === "Office" || structureName === "Factory")
         return true
     return false
 }
 
-function setBuildingSuppliedWithWater( building )
+function giveBuildingWater( building )
 {
-    building.buildingSuppliedWithWater = true
+    building.buildingHasWater = true
 }
 
-function setBuildingSuppliedWithElectricity( building )
+function giveBuildingElectric( building )
 {
-    building.buildingSuppliedWithElectricity = true
+    building.buildingHasElectric = true
 }
 
 function setWater( plot ) 
@@ -75,35 +74,13 @@ function getWire( structure )
     return structure.getElectricityWire()
 }
 
-// gives an object a resource
-function transmitProperty( structure, getFunction, setFunction ) {
-    if ( !( structure === false ) && !(getFunction( structure ) === 0 ) ) {
-        setFunction( structure )
-    }
-}
-
-// spreads resources from object to nearby objects
-function transmitProperties( map, structure, getFunction, setFunction ) {
-    let locations = [
-        map.getLocation(structure.positionY, structure.positionX),
-        map.getLocation(structure.positionY, structure.positionX - 1), 
-        map.getLocation(structure.positionY, structure.positionX + 1), 
-        map.getLocation(structure.positionY - 1, structure.positionX), 
-        map.getLocation(structure.positionY + 1, structure.positionX)
-    ]
-
-    for (let index = 0; index < locations.length; index++)
-        transmitProperty( locations[index], getFunction, setFunction )
-}
-
 module.exports = {
-    getAllTaxes,
-    checkForBuilding,
-    setBuildingSuppliedWithWater,
-    setBuildingSuppliedWithElectricity,
+    getAllTax,
+    checkForStructure,
+    giveBuildingWater,
+    giveBuildingElectric,
     setWater,
     setElectricity,
     getPipe,
-    getWire,
-    transmitProperties
+    getWire
 }

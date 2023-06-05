@@ -1,11 +1,11 @@
-const MapLocation = require("./mapLocation");
+const { MapLocation } = require("./MapLocation");
 
-class MapPlot extends MapLocation.MapLocation {
-    constructor( positionY, positionX, structure, WaterPipe, ElectricityWire ) {
+class MapPlot extends MapLocation {
+    constructor( positionY, positionX, structure, waterPipe, electricWire ) {
         super( positionY, positionX )
         this.structure = structure
-        this.WaterPipe = WaterPipe
-        this.ElectricityWire = ElectricityWire
+        this.waterPipe = waterPipe
+        this.electricWire = electricWire
     }
 
     getLocation() {
@@ -13,17 +13,42 @@ class MapPlot extends MapLocation.MapLocation {
     }
 
     getStructure() {
-        return this.structure
+        if (this.structure === undefined) {
+            return false
+        }
+        else {
+            return this.structure
+        }
     }
 
     getWaterPipe() {
-        return this.WaterPipe
+        return this.waterPipe
     }
 
     getElectricityWire() {
-        return this.ElectricityWire
+        return this.electricWire
+    }
+
+    hasWaterPipe() {
+        if (!(this.waterPipe === undefined)) {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+
+    hasElectricWire() {
+        if (!(this.electricWire === undefined)) {
+            return true
+        }
+        else {
+            return false
+        }
     }
 
 }
 
-module.exports = {MapPlot}
+module.exports = {
+    MapPlot
+}

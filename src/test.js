@@ -1,14 +1,25 @@
-const { coordinateCheck } = require('./map/mapchecks')
-const { Map } = require('./map/map')
+class number1 {
+    constructor( property1 ) {
+        this.property1 = property1
+    }
 
-const mapWidth = 6
-const mapHeight = 6
+    getProperty1() {
+        return this.property1
+    }
+}
 
-let map = new Map()
-map.initialiseMap( mapWidth, mapHeight )
+class number2 extends number1 {
+    constructor( property1, property2) {
+        super( property1 )
+        this.property2 = property2
+    }
 
-const x = coordinateCheck(map, 0, 'x')
-const y = coordinateCheck(map, 5, 'y')
-const z = coordinateCheck(map, 4, 'z')
+    getProperty2() {
+        return this.property2
+    }
+}
 
-console.log(x, y, z)
+const sure = new number2( 3, 5)
+
+console.log(sure.getProperty1())
+

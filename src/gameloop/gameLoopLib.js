@@ -1,6 +1,10 @@
 const prompt = require('prompt')
 const building = require('../building/Building')
+const { House } = require('../structures/House')
+const { Office } = require('../structures/Office')
+const { Factory } = require('../structures/Factory')
 const { coordinateCheck } = require('../map/mapchecks')
+const { getAllTaxes } = require('../building/buildinglib')
 
 async function userLoop( map ) {
   const taskbar = await prompt.get({
@@ -84,13 +88,13 @@ async function getRawCoordinates() {
 function structureSelector( map, response, y, x ) {
   switch ( response["building"] ) {
     case "house":
-      map.addIndex(new building.Residence( y, x, false, 1, false, false))
+      map.addIndex(new House( y, x, false, 1, false, false))
       break
     case "office":
-      map.addIndex(new building.Commercial( y, x, false, 1, false, false))
+      map.addIndex(new Office( y, x, false, 1, false, false))
       break
     case "factory":
-      map.addIndex(new building.Industrial( y, x, false, 1, false, false))
+      map.addIndex(new Factory( y, x, false, 1, false, false))
       break
     case "waterstation":
       break

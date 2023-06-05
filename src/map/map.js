@@ -1,41 +1,33 @@
-const BuildingLib = require( '../building/buildingLib' )
-const { MapPlot } = require('./mapPlot')
+const BuildingLib = require( '../building/buildinglib' )
+const { structureMap } = require('./mapLib')
 
 class Map {
-    constructor() {
+    constructor( mapWidth, mapHeight ) {
+        this.mapWidth = mapWidth
+        this.mapHeight = mapHeight
         this.map = []
     }
 
-    initialiseMap( width, height ) {
-        for (let indexHeight = 0; indexHeight < height; indexHeight++) {
-            this.map.push([])
-            for (let indexWidth = 0; indexWidth < width; indexWidth++) {
-                let newPlot = new MapPlot( indexHeight, indexWidth, undefined, undefined, undefined )
-                this.map[this.map.length - 1].push( newPlot )
-            }
-        }
-        this.map
+    // creates empty plots on the map
+    initialiseMap() {
+        structureMap( this.map, this.mapWidth, this.mapHeight )
     }
 
     getMap() {
         return this.map
     }
 
-    
-    getHeight() {
-        return this.map.length
-    }
-    
     getWidth() {
-        return this.map[0].length
-    }
-    
-    deleteIndex(  positionX, positionY  ) {
-        this.map[positionY, positionX] = 0
+        return this.mapWidth
     }
 
-    getRow( index ) {
-        return this.map[index]
+    getHeight() {
+        return this.mapHeight
+    }
+    
+
+    getMapWidthAndHeight() {
+        return {"mapWidth": this.mapWidth, "mapHeight": this.mapHeight}
     }
 
     // gathers a location at ( y, x ) if location exists
@@ -47,114 +39,99 @@ class Map {
     }
 
     widthHeightCheck( y, x ) {
-        const mapHeight = this.getHeight()
-        const mapWidth = this.getWidth()
+        const mapSize = this.getMapWidthAndHeight()
 
-        switch ([y, x]) {
-            case y < 0 || y > mapHeight:
-                console.log("The Y coordinate is invalid.")
-                return false
-            case x < 0 || x > mapWidth:
-                console.log("The X coordinate is invalid.")
-                return false
-            default:
-                return true
-            }
+        if (y < 0 || y > mapSize["mapHeight"]) {
+            return false
+        }
+        else if (x < 0 || x > mapSize["mapWidth"]) {
+            return false
+        }
+        else {
+            return true
+        }
     }
 
     // places object on the specified location in the specified keys value
     addIndex( object ) {
         if ( object === undefined ) {
-            console.log("Building was invalid")
+            console.log("Building is invalid")
             return false
         }
         let objectLocation = this.getLocation( object.positionY, object.positionX )
         if (!objectLocation) {
-            console.log("Building placement was invalid")
+            console.log("Building placement is invalid")
             return false
         }
 
         switch (object.constructor.name) {
             case "WaterPipe":
-                objectLocation["WaterPipe"] = object
+                objectLocation["waterPipe"] = object
                 return
-            case "ElectricityWire":
-                objectLocation["ElectricityWire"] = object
+            case "ElectricWire":
+                objectLocation["electricWire"] = object
                 return
             default:
                 objectLocation["structure"] = object
             } 
         }
 
-    // gatheres a plot and all plots around it from x y coords
-    getNearbyPlotsOnMap( pipe, setValue ) {
+    // gather plots next to target plot
+    getNearbyPlots( currentPlot ) {
         let locations = [
-            this.getLocation( pipe.positionY, pipe.positionX ),
-            this.getLocation( pipe.positionY, pipe.positionX - 1 ),
-            this.getLocation( pipe.positionY, pipe.positionX + 1 ),
-            this.getLocation( pipe.positionY - 1, pipe.positionX ),
-            this.getLocation( pipe.positionY + 1, pipe.positionX )
+            currentPlot,
+            this.getLocation( currentPlot.positionY, currentPlot.positionX - 1 ),
+            this.getLocation( currentPlot.positionY, currentPlot.positionX + 1 ),
+            this.getLocation( currentPlot.positionY - 1, currentPlot.positionX ),
+            this.getLocation( currentPlot.positionY + 1, currentPlot.positionX )
         ]
 
+        return locations
+    }
+
+    // checks if nearby plots have a structure and gives resources to said structure
+    getNearbyPlotsOnMap( currentPlot, setValue ) {
+        const locations = this.getNearbyPlots( currentPlot )
+
         for (let index = 0; index < locations.length; index++) {
-            if (locations[index] && BuildingLib.checkForBuilding(locations[index]))
+            if (locations[index] && BuildingLib.checkForStructure(locations[index]))
                 setValue(locations[index].getStructure())
         }
     }
      
-    // checks if there are filled in properties on a plot
-    activeProperties( currentLocation ) {
-        let waterPipe = currentLocation.getWaterPipe()
-        let electricWire = currentLocation.getElectricityWire()
+    // checks if a plot has substructures and those substructures have resources
+    subStructureCheck( currentPlot ) {
+        if (currentPlot.hasWaterPipe()) {
+            let waterPipe = currentPlot.getWaterPipe()
+            waterPipe.giveResource()
 
-        if ( waterPipe.constructor.name === "WaterPipe" && waterPipe.pipeFilled())
-                this.getNearbyPlotsOnMap( currentLocation, BuildingLib.setBuildingSuppliedWithWater ) 
+            if (waterPipe.checkResource())
+                this.getNearbyPlotsOnMap( currentPlot, BuildingLib.giveBuildingWater ) 
+        }
 
-        if ( electricWire.constructor.name === "ElectricityWire" && electricWire.wireCharged() )
-            this.getNearbyPlotsOnMap( currentLocation, BuildingLib.setBuildingSuppliedWithElectricity ) 
+        if (currentPlot.hasElectricWire()) {
+            let electricWire = currentPlot.getElectricityWire()
+
+            if (electricWire.checkResource() )
+                this.getNearbyPlotsOnMap( currentPlot, BuildingLib.giveBuildingElectric ) 
+        }
     }
     
     // checks if there is a building at location and if there are active properties on that building
-    setBuildingNecessities( positionY, positionX ) {
-        let currentLocation = this.getLocation( positionY, positionX )
-        this.activeProperties( currentLocation )
-    }
-
-    // sets structures to have a resource (such as water or electric)
-    setAllBuildingNecessities() {
-        let mapHeight = this.getHeight()
-        let mapWidth = this.getWidth()
-        for ( let y = 0; y < mapHeight; y++ )
-            for ( let x = 0; x < mapWidth; x++ )
-                this.setBuildingNecessities( y, x )
-    }
-
-    // checks for highway object
-    highwayCheck( y, x ) {
-        // left
-        this.perimeterCheck(  y, x - 1  )
-        // right
-        this.perimeterCheck(  y, x + 1  )
-        // up
-        this.perimeterCheck(  y - 1, x  )
-        // down
-        this.perimeterCheck(  y + 1, x  )
-
-        return
-    }
-
-    // checks a nearby road (at location x and y) to see if it is an accessable road.
-    perimeterCheck( y, x ) {
-        try {
-            if ( this.map[y][x].constructor.name === "Road" && !( this.map[y][x].isRoadAccessable ) ) {
-            this.map[y][x].isRoadAccessable = true
-            this.highwayCheck(  y, x  )
-            return
-            }
+    setBuildingsResources( positionY, positionX ) {
+        let currentPlot = this.getLocation( positionY, positionX )
+        if (currentPlot) {
+            this.subStructureCheck( currentPlot )
         }
-        catch {return}
     }
 
+    // gives structures resources such as water or electric
+    setAllBuildingsResources() {
+        const mapSize = this.getMapWidthAndHeight()
+        for ( let y = 0; y < mapSize["mapHeight"]; y++ )
+            for ( let x = 0; x < mapSize["mapWidth"]; x++ )
+                this.setBuildingsResources( y, x )
+    }
 }
 
 module.exports = {Map}

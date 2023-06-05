@@ -1,4 +1,4 @@
-const { MapLocation } = require('../map/mapLocation')
+const { MapLocation } = require('../map/MapLocation')
 
 class ResourceGatherers extends MapLocation
 {
