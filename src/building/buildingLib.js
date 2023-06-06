@@ -3,7 +3,7 @@ function getTax( currentPlot ) {
     const structure = currentPlot["structure"]
     if (structure === undefined)
         return 0
-    if ( structure.buildingSuppliedWithWater === true && structure.buildingSuppliedWithElectricity === true )
+    if ( structure.buildingHasWater=== true && structure.buildingHasElectric === true )
     {
         switch ( structure.constructor.name ) 
         {

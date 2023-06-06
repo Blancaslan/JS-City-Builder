@@ -1,25 +1,16 @@
-class number1 {
-    constructor( property1 ) {
-        this.property1 = property1
-    }
+const blessed = require('blessed');
 
-    getProperty1() {
-        return this.property1
-    }
-}
+let counter = 0
 
-class number2 extends number1 {
-    constructor( property1, property2) {
-        super( property1 )
-        this.property2 = property2
-    }
+// Create a blessed screen
+const screen = blessed.screen({
+  smartCSR: true,
+});
 
-    getProperty2() {
-        return this.property2
-    }
-}
-
-const sure = new number2( 3, 5)
-
-console.log(sure.getProperty1())
-
+// Simulate changing the content of Line 2 after 2 seconds
+setInterval(() => {
+  counter++
+  let text = "Money: " + counter
+  screen.append(blessed.text({ content: text, top: 0 }))
+  screen.render()
+}, 1000)

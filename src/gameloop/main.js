@@ -5,6 +5,7 @@ const { Map } = require( '../map/Map' )
 const { WaterStation, PowerStation } = require('../government/resourceBuildings')
 const { WaterPipe } = require('../substructures/WaterPipe')
 const { ElectricWire } = require('../substructures/ElectricWire')
+const { House } = require('../structures/House')
 
 const mapWidth = 6
 const mapHeight = 6
@@ -21,10 +22,11 @@ map.addIndex( new ElectricWire( 0, 1, false ))
 
 let currency = 0
 
+
 setInterval(() => {
   map.setAllBuildingsResources()
   currency += getAllTax( map )
-}, 200);
+}, 3000);
 
 
 async function gameLoop() {
