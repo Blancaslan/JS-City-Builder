@@ -1,10 +1,11 @@
 const prompt = require('prompt')
-const building = require('../building/Building')
 const { House } = require('../structures/House')
 const { Office } = require('../structures/Office')
 const { Factory } = require('../structures/Factory')
 const { coordinateCheck } = require('../map/mapchecks')
-const { getAllTaxes } = require('../building/buildinglib')
+const { WaterStation, PowerStation } = require('../government/resourceBuildings')
+const { WaterPipe } = require('../substructures/WaterPipe')
+const { ElectricWire } = require('../substructures/ElectricWire')
 
 async function userLoop( map ) {
   const taskbar = await prompt.get({
@@ -22,15 +23,40 @@ async function userLoop( map ) {
         process.exit()
       case "build":
         console.log("Entered Build Mode.")
-        await build( map )
+        await buildingSelector( map )
         break
       case "destroy":
         console.log("Entered Destroy Mode.")
+        await destructionSelector( map )
         break
   }
 }
 
-async function build( map ) {
+// selects what building type to build
+async function destructionSelector( map ) {
+  const response = await prompt.get({
+    properties: {
+      type: {
+        description: "What do you want to destory? (building, pipe, wire) ",
+        type: "string",
+        required: true
+      }
+    }
+  })
+  await destroy( map, response )
+}
+
+// destroys a structure/substructure at specified location
+async function destroy( map, response ) {
+  console.log("Could you give the coordinates of the location you want to destroy? ")
+  const {x, y} = await organiseCoordinates( map )
+  if (x["condition"] && y["condition"]) {
+    map.destroyIndex( y["value"], x["value"], response["type"] )
+  }
+}
+
+// selects what building type to build
+async function buildingSelector( map ) {
   const response = await prompt.get({
     properties: {
       building: {
@@ -40,19 +66,20 @@ async function build( map ) {
       }
     }
   })
-  return await organs( map, response )
+  await build( map, response )
 }
 
-async function organs( map, response ) {
+// builds a structure/substructure at specified location
+async function build( map, response ) {
+  console.log("Could you give the coordinates of the location where you want to build? ")
   const {x, y} = await organiseCoordinates( map )
   if (x["condition"] && y["condition"]) {
     structureSelector( map, response, y["value"], x["value"])
   }
 }
 
+// returns the coordinates in a clean manner
 async function organiseCoordinates( map ) {
-  console.log("Could you give the coordinates of where you want to build? ")
-
   const rawCoordinates = await getRawCoordinates()
   let {x, y} = convertRawCoordinates( rawCoordinates )
 
@@ -61,12 +88,14 @@ async function organiseCoordinates( map ) {
   return {"x": x, "y": y}
 }
 
+// converts raw coordinates to comply with 0 indexing arrays
 function convertRawCoordinates( rawCoordinates ) {
   const x = rawCoordinates["x"] - 1
   const y = rawCoordinates["y"] - 1
   return {"x": x, "y": y}
 }
 
+// gets the coordinates from the user
 async function getRawCoordinates() {
   return await prompt.get({
     properties: {
@@ -84,7 +113,7 @@ async function getRawCoordinates() {
   })
 }
 
-
+// selects what kind of structure to build at a given location
 function structureSelector( map, response, y, x ) {
   switch ( response["building"] ) {
     case "house":
@@ -97,48 +126,21 @@ function structureSelector( map, response, y, x ) {
       map.addIndex(new Factory( y, x, false, 1, false, false))
       break
     case "waterstation":
+      map.addIndex(new WaterStation( y, x))
       break
     case "powerstation":
+      map.addIndex(new PowerStation( y, x))
       break
     case "pipe":
+      map.addIndex(new WaterPipe( y, x ))
       break
     case "wire":
+      map.addIndex(new ElectricWire( y, x ))
       break
-    default:
-      console.log("That building doesn't exist.")
   }
-}
-
-function outputCurrency( currency ) {
-  console.log("Money: " + currency + "\n")
-}
-
-function outputStructure( map, heightIndex, widthIndex ) {
-  let currentLocation = map.getLocation( heightIndex, widthIndex )
-
-  if (!(currentLocation["structure"] === undefined))
-    process.stdout.write(currentLocation["structure"].constructor.name[0] + ' ')
-  else 
-    process.stdout.write(0 + ' ')
-}
-
-function displayUI( map, currency ) {
-  console.clear()
-  outputCurrency( currency )
-  let mapHeight = map.getHeight()
-  let mapWidth = map.getWidth()
-  for (let heightIndex = 0; heightIndex < mapHeight; heightIndex++) {
-    for (let widthIndex = 0; widthIndex < mapWidth; widthIndex++) {
-      outputStructure( map, heightIndex, widthIndex )
-    }
-    console.log()
-  }
-  console.log("\n-----------\n")
-  return
 }
 
 module.exports = {
   userLoop,
-  build,
-  displayUI
+  build: buildingSelector
 }

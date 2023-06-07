@@ -1,4 +1,7 @@
 const BuildingLib = require( '../building/buildinglib' )
+const { House } = require('../structures/House')
+const { ElectricWire } = require('../substructures/ElectricWire')
+const { WaterPipe } = require('../substructures/WaterPipe')
 const { structureMap } = require('./mapLib')
 
 class Map {
@@ -55,12 +58,10 @@ class Map {
     // places object on the specified location in the specified keys value
     addIndex( object ) {
         if ( object === undefined ) {
-            console.log("Building is invalid")
             return false
         }
         let objectLocation = this.getLocation( object.positionY, object.positionX )
-        if (!objectLocation) {
-            console.log("Building placement is invalid")
+        if (!(objectLocation)) {
             return false
         }
 
@@ -74,7 +75,27 @@ class Map {
             default:
                 objectLocation["structure"] = object
             } 
+    }
+
+    // destroys structures/substructures on a plot
+    destroyIndex( y, x, type ) {
+        let location = this.getLocation( y, x )
+        if (!(location)) {
+            return false
         }
+
+        switch (type) {
+            case "pipe":
+                location["waterPipe"] = undefined
+                break
+            case "wire":
+                location["electricWire"] = undefined
+                break
+            case "building":
+                location["structure"] = undefined
+                break
+        } 
+    }
 
     // gather plots next to target plot
     getNearbyPlots( currentPlot ) {

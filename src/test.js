@@ -1,16 +1,12 @@
-const blessed = require('blessed');
+const RESET = '\x1b[0m';
+const RED = '\x1b[44m';
+const GREEN = '\x1b[32m';
+const YELLOW = '\x1b[33m';
+const BOLD = '\x1b[1m';
+const UNDERLINE = '\x1b[4m';
 
-let counter = 0
-
-// Create a blessed screen
-const screen = blessed.screen({
-  smartCSR: true,
-});
-
-// Simulate changing the content of Line 2 after 2 seconds
-setInterval(() => {
-  counter++
-  let text = "Money: " + counter
-  screen.append(blessed.text({ content: text, top: 0 }))
-  screen.render()
-}, 1000)
+console.log(RED + '0' + RESET);
+console.log('This text is green.' + RESET);
+console.log(YELLOW + 'This text is yellow.' + RESET);
+console.log(BOLD + 'This text is bold.' + RESET);
+console.log(UNDERLINE + 'This text is underlined.' + RESET);

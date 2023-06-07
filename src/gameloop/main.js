@@ -1,5 +1,6 @@
 const { getAllTax } = require('../building/buildinglib')
-const { userLoop, displayUI } = require('./gamelooplib')
+const { userLoop } = require('./gamelooplib')
+const { displayUI } = require('./displaylib')
 const { Map } = require( '../map/Map' )
 
 const { WaterStation, PowerStation } = require('../government/resourceBuildings')
@@ -38,3 +39,4 @@ async function gameLoop() {
 }
 
 gameLoop()
+
