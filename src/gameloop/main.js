@@ -40,3 +40,6 @@ async function gameLoop() {
 
 gameLoop()
 
+// have to find a way to spend taxes on services
+
+// possibly make the text color less offensive with different colors

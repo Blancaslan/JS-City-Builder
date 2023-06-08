@@ -19,14 +19,14 @@ async function userLoop( map ) {
   })
   switch ( taskbar.taskbar ) {
       case "exit":
-        console.log("Exiting Game...")
+        console.log("\nExiting Game...\n")
         process.exit()
       case "build":
-        console.log("Entered Build Mode.")
+        console.log()
         await buildingSelector( map )
         break
       case "destroy":
-        console.log("Entered Destroy Mode.")
+        console.log()
         await destructionSelector( map )
         break
   }
@@ -48,7 +48,7 @@ async function destructionSelector( map ) {
 
 // destroys a structure/substructure at specified location
 async function destroy( map, response ) {
-  console.log("Could you give the coordinates of the location you want to destroy? ")
+  console.log("\nGive coordinates of where to destroy:\n")
   const {x, y} = await organiseCoordinates( map )
   if (x["condition"] && y["condition"]) {
     map.destroyIndex( y["value"], x["value"], response["type"] )
@@ -71,7 +71,7 @@ async function buildingSelector( map ) {
 
 // builds a structure/substructure at specified location
 async function build( map, response ) {
-  console.log("Could you give the coordinates of the location where you want to build? ")
+  console.log("\nGive coordinates of where to build:\n")
   const {x, y} = await organiseCoordinates( map )
   if (x["condition"] && y["condition"]) {
     structureSelector( map, response, y["value"], x["value"])

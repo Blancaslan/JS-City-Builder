@@ -15,7 +15,7 @@ class SubStructure extends MapLocation {
     }
 
     checkResource() {
-        if (this.checkResource) {
+        if (this.hasResource) {
             return true
         }
         else {

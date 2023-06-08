@@ -29,6 +29,10 @@ class MapPlot extends MapLocation {
         return this.electricWire
     }
 
+    getSubStructures() {
+        return [this.getWaterPipe(), this.getElectricityWire()]
+    }
+
     hasWaterPipe() {
         if (!(this.waterPipe === undefined)) {
             return true
